@@ -51,36 +51,6 @@
   .bg-layer img { display: none; }   /* 暫時隱藏，用 CSS background 代替 */
   .fg-layer { display: none; }       /* 前景圖待定，暫時隱藏 */
 
-  /* ── 色塊佔位：主神像 ── */
-  .statue-ph {
-    position: absolute;
-    bottom: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 120px;
-    height: 160px;
-    border-radius: 20px 20px 10px 10px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    font-family: 'Noto Serif TC', serif;
-    font-size: 13px;
-    letter-spacing: 2px;
-    color: rgba(255,255,255,0.75);
-    transition: filter 0.2s ease;
-    pointer-events: none;
-  }
-  .enter-btn:hover .statue-ph { filter: brightness(1.2); }
-
-  /* ── 色塊佔位：側邊小神像 ── */
-  .side-ph {
-    width: 56px;
-    height: 130px;
-    border-radius: 14px 14px 6px 6px;
-    opacity: 0.3;
-  }
 
   /* ─── LAYER 1: PARTICLE CANVAS ─── */
   #particle-canvas {
@@ -280,82 +250,48 @@
     overflow: visible;
   }
 
-  /* Side statues */
-  .side-item {
+  /* ── 圓柱轉盤 items ── */
+  .c-item {
     position: absolute;
-    top: 0; bottom: 0;
-    display: flex;
-    align-items: flex-end;
-    justify-content: center;
-    pointer-events: none;
-  }
-  .side-item.at-prev { left: 0;  width: 82px; }
-  .side-item.at-next { right: 0; width: 82px; }
-
-  .side-statue-img {
-    width: 66px;
-    height: 148px;
-    object-fit: contain;
-    object-position: bottom center;
-    opacity: 0.28;
-    filter: blur(2px);
-    display: block;
-  }
-
-  /* Main statue (center) */
-  .main-item {
-    position: relative;
-    display: flex;
-    align-items: flex-end;
-    justify-content: center;
-    flex: 0 0 auto;
-    height: 100%;
-  }
-  .enter-btn {
-    position: relative;
+    bottom: 0;
+    left: 50%;
     width: 148px;
     height: 100%;
-    background: none;
-    border: none;
-    padding: 0;
+    transform-origin: bottom center;
+    will-change: transform, opacity;
     cursor: pointer;
     -webkit-tap-highlight-color: transparent;
-    display: flex;
-    align-items: flex-end;
-    justify-content: center;
+    user-select: none;
   }
-  .main-statue-img {
+
+  /* 色塊佔位 */
+  .c-ph {
     position: absolute;
     bottom: 0;
     left: 50%;
     transform: translateX(-50%);
-    width: 148px;
-    height: 100%;
-    object-fit: contain;
-    object-position: bottom center;
-    transition: opacity 0.2s ease;
-    user-select: none;
-    -webkit-user-drag: none;
-  }
-  .main-statue-img.s-idle   { opacity: 1; }
-  .main-statue-img.s-hover  { opacity: 0; }
-  .main-statue-img.s-active { opacity: 0; }
-
-  /* hover → 睜眼舉道具 (s-active image) */
-  .enter-btn:hover .main-statue-img.s-idle   { opacity: 0; }
-  .enter-btn:hover .main-statue-img.s-active { opacity: 1; }
-  /* click → 腳印發亮 (s-hover image) */
-  .enter-btn.active .main-statue-img.s-idle   { opacity: 0; }
-  .enter-btn.active .main-statue-img.s-active { opacity: 0; }
-  .enter-btn.active .main-statue-img.s-hover  { opacity: 1; }
-  .enter-btn:not(.locked-active):hover {
-    filter: drop-shadow(0 0 22px rgba(212,168,67,0.6));
+    width: 120px;
+    height: 160px;
+    border-radius: 20px 20px 10px 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Noto Serif TC', serif;
+    font-size: 13px;
+    letter-spacing: 2px;
+    color: rgba(255,255,255,0.8);
+    pointer-events: none;
   }
 
-  /* Locked overlay */
+  /* 鎖定遮罩 */
   .locked-overlay {
     position: absolute;
-    inset: 0;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 120px;
+    height: 160px;
+    border-radius: 20px 20px 10px 10px;
     display: none;
     flex-direction: column;
     align-items: center;
@@ -365,30 +301,10 @@
     font-size: 15px;
     letter-spacing: 2px;
     gap: 8px;
-    border-radius: 12px;
-    cursor: default;
+    pointer-events: none;
   }
-  .locked-overlay .lock-icon { font-size: 32px; }
+  .locked-overlay .lock-icon { font-size: 28px; }
   .locked-overlay.visible { display: flex; }
-
-  /* ── Navigation arrows ── */
-  .nav-arrow {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    background: none;
-    border: none;
-    padding: 8px;
-    cursor: pointer;
-    color: rgba(212,168,67,0.5);
-    transition: color 0.25s ease, opacity 0.5s ease;
-    z-index: 7;
-    -webkit-tap-highlight-color: transparent;
-  }
-  .nav-arrow:hover { color: var(--gold); }
-  .nav-arrow.left-arrow  { left: 2px; }
-  .nav-arrow.right-arrow { right: 2px; }
-  .nav-arrow.hide { opacity: 0; pointer-events: none; }
 
   /* ── Shadow ellipse under center statue (542 → 555px) ── */
   .statue-shadow {
@@ -781,40 +697,19 @@
     <!-- Carousel -->
     <div class="carousel-area" id="carouselArea">
 
-      <!-- Left (previous) side statue -->
-      <div class="side-item at-prev" id="prevItem">
-        <div class="side-ph" id="prevPh"></div>
+      <!-- 3 神像：JS 依 currentIdx 計算位置 -->
+      <div class="c-item" id="ci-0" data-idx="0">
+        <div class="c-ph"></div>
+        <div class="locked-overlay"><span class="lock-icon">🔒</span><span>即將推出</span></div>
       </div>
-
-      <!-- Center (main) statue -->
-      <div class="main-item" id="mainItem">
-        <button class="enter-btn" id="enterBtn">
-          <div class="statue-ph" id="statuePh"></div>
-          <div class="locked-overlay" id="lockedOverlay">
-            <span class="lock-icon">🔒</span>
-            <span>即將推出</span>
-          </div>
-        </button>
+      <div class="c-item" id="ci-1" data-idx="1">
+        <div class="c-ph"></div>
+        <div class="locked-overlay"><span class="lock-icon">🔒</span><span>即將推出</span></div>
       </div>
-
-      <!-- Right (next) side statue -->
-      <div class="side-item at-next" id="nextItem">
-        <div class="side-ph" id="nextPh"></div>
+      <div class="c-item" id="ci-2" data-idx="2">
+        <div class="c-ph"></div>
+        <div class="locked-overlay"><span class="lock-icon">🔒</span><span>即將推出</span></div>
       </div>
-
-      <!-- Navigation arrows -->
-      <button class="nav-arrow left-arrow" id="leftArrow" aria-label="上一個">
-        <svg width="28" height="44" viewBox="0 0 28 44" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M22 4 C14 4, 6 12, 6 22 C6 32, 14 40, 22 40" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" fill="none"/>
-          <path d="M12 32 L6 40 L14 42" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-        </svg>
-      </button>
-      <button class="nav-arrow right-arrow" id="rightArrow" aria-label="下一個">
-        <svg width="28" height="44" viewBox="0 0 28 44" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M6 4 C14 4, 22 12, 22 22 C22 32, 14 40, 6 40" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" fill="none"/>
-          <path d="M16 32 L22 40 L14 42" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-        </svg>
-      </button>
     </div>
 
     <!-- Shadow ellipse under center statue -->
@@ -986,164 +881,168 @@ const MODES = [
   },
 ];
 
+/* ═══════════════════════════════════════════
+   CYLINDER CAROUSEL
+   ═══════════════════════════════════════════ */
 let currentIdx = 0;
-let arrowHidden = false;
+let dragX      = 0;
+let didDrag    = false;
 
-function wrap(i) {
-  return ((i % MODES.length) + MODES.length) % MODES.length;
+const N              = MODES.length;
+const SLOT_X         = 148;   // px：中心到側邊
+const DRAG_RESISTANCE = 0.88;
+const SNAP_THRESHOLD  = 42;   // px：觸發切換的最小距離
+
+function wrap(i) { return ((i % N) + N) % N; }
+
+function getVisualPos(itemIdx) {
+  let offset = ((itemIdx - currentIdx) % N + N) % N;
+  if (offset === 2) offset = -1;           // wrap: 2 → -1（左側）
+  return offset + dragX / SLOT_X;
 }
 
-function updateCarousel(animated) {
+function applyTransforms(withTransition) {
+  document.querySelectorAll('.c-item').forEach(item => {
+    const idx  = +item.dataset.idx;
+    const vp   = getVisualPos(idx);
+    const absVp = Math.abs(vp);
+
+    const x       = vp * SLOT_X;
+    const scale   = Math.max(0.52, 1 - absVp * 0.36);
+    const opacity = Math.max(0,    1 - absVp * 0.72);
+    const blur    = Math.min(3,    absVp * 2.2);
+    const zIndex  = Math.round((1 - Math.min(absVp, 1)) * 10);
+
+    item.style.transition = withTransition
+      ? 'transform 0.38s cubic-bezier(0.34,1.56,0.64,1), opacity 0.26s ease, filter 0.26s ease'
+      : 'none';
+    item.style.transform      = `translateX(calc(-50% + ${x}px)) scale(${scale.toFixed(3)})`;
+    item.style.opacity        = opacity.toFixed(3);
+    item.style.filter         = blur > 0.1 ? `blur(${blur.toFixed(1)}px)` : '';
+    item.style.zIndex         = zIndex;
+    item.style.pointerEvents  = absVp < 1.3 ? 'auto' : 'none';
+
+    // 鎖定遮罩只在正面且 locked 時顯示
+    const lo = item.querySelector('.locked-overlay');
+    lo.classList.toggle('visible', absVp < 0.3 && MODES[idx].locked);
+  });
+
+  // Bottom info & dots
   const m = MODES[currentIdx];
-  const prev = MODES[wrap(currentIdx - 1)];
-  const next = MODES[wrap(currentIdx + 1)];
-
-  // 主色塊
-  const ph = document.getElementById('statuePh');
-  ph.style.background = m.color;
-  ph.textContent = m.name;
-
-  // 側邊色塊
-  document.getElementById('prevPh').style.background = prev.color;
-  document.getElementById('nextPh').style.background = next.color;
-
-  // Locked overlay
-  const overlay = document.getElementById('lockedOverlay');
-  overlay.classList.toggle('visible', m.locked);
-
-  // Bottom info
   document.getElementById('modeName').textContent = m.name;
   document.getElementById('modeDesc').textContent = m.desc;
+  document.querySelectorAll('.dot').forEach((d, i) => d.classList.toggle('active', i === currentIdx));
+}
 
-  // Dots
-  document.querySelectorAll('.dot').forEach((d, i) => {
-    d.classList.toggle('active', i === currentIdx);
+function snapTo(targetIdx) {
+  const oldIdx = currentIdx;
+  currentIdx = wrap(targetIdx);
+  dragX = 0;
+
+  // 找出「繞背面跳位」的 item（從 -1 跳到 +1 或反過來）
+  // 讓它先無形傳送到新位置，再用 transition 淡入，避免橫跨畫面的殘影
+  document.querySelectorAll('.c-item').forEach(item => {
+    const i = +item.dataset.idx;
+    const vpOf = (base) => {
+      let o = ((i - base) % N + N) % N;
+      return o === 2 ? -1 : o;
+    };
+    const oldVp = vpOf(oldIdx);
+    const newVp = vpOf(currentIdx);
+    if (Math.abs(newVp - oldVp) >= 2) {
+      const x     = newVp * SLOT_X;
+      const scale = Math.max(0.52, 1 - Math.abs(newVp) * 0.36);
+      item.style.transition = 'none';
+      item.style.opacity    = '0';
+      item.style.transform  = `translateX(calc(-50% + ${x}px)) scale(${scale.toFixed(3)})`;
+    }
   });
+
+  requestAnimationFrame(() => requestAnimationFrame(() => applyTransforms(true)));
 }
 
-let isNavigating = false;
+// ── 初始化色塊顏色 ──
+MODES.forEach((m, i) => {
+  const ph = document.querySelector(`#ci-${i} .c-ph`);
+  ph.style.background = m.color;
+  ph.textContent = m.name;
+});
 
-// dir: 動畫方向(-1/1)，targetIdx: 可選，若有則直接跳到該 index
-function navigate(dir, targetIdx) {
-  if (isNavigating) return;
-  isNavigating = true;
-
-  const nextIdx = (targetIdx !== undefined) ? targetIdx : wrap(currentIdx + dir);
-  const btn = document.getElementById('enterBtn');
-
-  // Phase 1: 淡出
-  btn.style.transition = 'opacity 0.16s ease, transform 0.16s ease';
-  btn.style.opacity    = '0';
-  btn.style.transform  = `scale(0.84) translateX(${dir > 0 ? -18 : 18}px)`;
-
-  setTimeout(() => {
-    currentIdx = nextIdx;          // 統一在這裡更新 index
-    updateCarousel(false);
-
-    // Phase 2: 設定起點
-    btn.style.transition = 'none';
-    btn.style.opacity    = '0';
-    btn.style.transform  = `scale(0.84) translateX(${dir > 0 ? 18 : -18}px)`;
-
-    // Phase 3: 淡入彈入
-    requestAnimationFrame(() => requestAnimationFrame(() => {
-      btn.style.transition = 'opacity 0.22s ease, transform 0.34s cubic-bezier(0.34,1.56,0.64,1)';
-      btn.style.opacity    = '1';
-      btn.style.transform  = 'scale(1) translateX(0)';
-      setTimeout(() => {
-        isNavigating = false;
-        btn.style.cssText = '';
-      }, 360);
-    }));
-  }, 170);
-}
-
-function hideArrows() {
-  if (arrowHidden) return;
-  arrowHidden = true;
-  document.getElementById('leftArrow').classList.add('hide');
-  document.getElementById('rightArrow').classList.add('hide');
-}
-
-// Build dots
+// ── Dots ──
 (function buildDots() {
-  const dotsEl = document.getElementById('modeDots');
+  const el = document.getElementById('modeDots');
   MODES.forEach((_, i) => {
     const d = document.createElement('span');
     d.className = 'dot' + (i === 0 ? ' active' : '');
-    d.addEventListener('click', () => {
-      if (i === currentIdx || isNavigating) return;
-      navigate(i > currentIdx ? 1 : -1, i);  // 傳目標 index，不再自己覆蓋
-    });
-    dotsEl.appendChild(d);
+    d.addEventListener('click', () => { if (i !== currentIdx) snapTo(i); });
+    el.appendChild(d);
   });
 })();
 
-// Arrow nav
-document.getElementById('leftArrow').addEventListener('click',  () => { navigate(-1); hideArrows(); });
-document.getElementById('rightArrow').addEventListener('click', () => { navigate(1);  hideArrows(); });
-
-// Side items — tap to navigate
-document.getElementById('prevItem').style.pointerEvents = 'auto';
-document.getElementById('nextItem').style.pointerEvents = 'auto';
-document.getElementById('prevItem').style.cursor = 'pointer';
-document.getElementById('nextItem').style.cursor = 'pointer';
-document.getElementById('prevItem').addEventListener('click', () => navigate(-1));
-document.getElementById('nextItem').addEventListener('click', () => navigate(1));
-
-// Enter button
-let isSwiping = false;
-document.getElementById('enterBtn').addEventListener('click', () => {
-  if (isSwiping) return;
-  const m = MODES[currentIdx];
-  if (m.locked) { showToast(); return; }
-  const btn = document.getElementById('enterBtn');
-  btn.classList.add('active');
-  setTimeout(() => btn.classList.remove('active'), 400);
-  prevType = m.id;
-  setTimeout(() => go(m.id), 200);
+// ── Item 點擊：側邊 → 切換，正面 → 進入 ──
+document.querySelectorAll('.c-item').forEach(item => {
+  item.addEventListener('click', () => {
+    if (didDrag) return;
+    const idx = +item.dataset.idx;
+    const vp  = getVisualPos(idx);
+    if (Math.abs(vp) > 0.3) {
+      snapTo(idx);
+    } else {
+      const m = MODES[currentIdx];
+      if (m.locked) { showToast(); return; }
+      prevType = m.id;
+      go(m.id);
+    }
+  });
 });
 
-// ── 純手勢偵測（轉盤邏輯，不移動畫面） ──────────────────
-(function setupSwipe() {
-  let sx = 0, sy = 0, st = 0;
-  let tracking = false, moved = false;
+// ── 拖拽（跟手推動） ──
+(function setupDrag() {
+  let startX = 0, startY = 0;
+  let tracking = false, dirLocked = false, isHoriz = false;
 
   function homeVisible() {
     return !document.getElementById('s-home').classList.contains('hidden');
   }
 
   function onStart(x, y) {
-    if (!homeVisible() || isNavigating) return;
-    sx = x; sy = y; st = Date.now();
-    tracking = true; moved = false;
+    if (!homeVisible()) return;
+    startX = x; startY = y;
+    tracking = true; dirLocked = false; isHoriz = false;
   }
 
   function onMove(x, y) {
-    if (!tracking || moved) return;
-    const adx = Math.abs(x - sx), ady = Math.abs(y - sy);
-    if (adx < 6 && ady < 6) return;       // 還沒移夠
-    if (ady > adx + 3) { tracking = false; return; } // 垂直優先 → 取消
-    moved = true; isSwiping = true;        // 確認水平滑動
+    if (!tracking) return;
+    const dx = x - startX, dy = y - startY;
+    if (!dirLocked) {
+      if (Math.abs(dx) < 5 && Math.abs(dy) < 5) return;
+      isHoriz = Math.abs(dx) >= Math.abs(dy);
+      dirLocked = true;
+      if (!isHoriz) { tracking = false; return; }
+    }
+    if (!isHoriz) return;
+    dragX = dx * DRAG_RESISTANCE;
+    applyTransforms(false);
   }
 
   function onEnd(x) {
     if (!tracking) return;
     tracking = false;
-    if (!moved) { isSwiping = false; return; }
-
-    const dx  = x - sx;
-    const vel = Math.abs(dx) / Math.max(Date.now() - st, 1);
-    if (Math.abs(dx) > 40 || vel > 0.2) {
-      navigate(dx < 0 ? 1 : -1);
+    const dx = x - startX;
+    if (isHoriz && Math.abs(dx) >= SNAP_THRESHOLD) {
+      didDrag = true;
+      snapTo(currentIdx + (dx < 0 ? 1 : -1));
+    } else {
+      dragX = 0;
+      applyTransforms(true);
     }
-    setTimeout(() => { isSwiping = false; }, 400);
+    setTimeout(() => { didDrag = false; }, 80);
   }
 
   // Touch
   document.addEventListener('touchstart', e => onStart(e.touches[0].clientX, e.touches[0].clientY), { passive: true });
   document.addEventListener('touchmove',  e => { if (tracking) onMove(e.touches[0].clientX, e.touches[0].clientY); }, { passive: true });
-  document.addEventListener('touchend',   e => { if (tracking) onEnd(e.changedTouches[0].clientX); }, { passive: true });
+  document.addEventListener('touchend',   e => onEnd(e.changedTouches[0].clientX), { passive: true });
 
   // Mouse（桌面測試）
   let mdown = false;
@@ -1152,11 +1051,8 @@ document.getElementById('enterBtn').addEventListener('click', () => {
   document.addEventListener('mouseup',   e => { if (mdown) { mdown = false; onEnd(e.clientX); } });
 })();
 
-// Auto-hide arrows after 3.5s
-setTimeout(hideArrows, 3500);
-
 // Initial render
-updateCarousel(false);
+applyTransforms(false);
 
 /* ═══════════════════════════════════════════
    SPEECH BUBBLE — rotating quotes
