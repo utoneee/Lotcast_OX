@@ -987,12 +987,6 @@ function snapTo(targetIdx) {
   requestAnimationFrame(() => requestAnimationFrame(() => applyTransforms(true)));
 }
 
-// ── 初始化色塊顏色 ──
-MODES.forEach((m, i) => {
-  const ph = document.querySelector(`#ci-${i} .c-ph`);
-  ph.style.background = m.color;
-  ph.textContent = m.name;
-});
 
 // ── Dots ──
 (function buildDots() {
