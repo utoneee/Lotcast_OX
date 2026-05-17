@@ -10,18 +10,18 @@
   * { box-sizing: border-box; margin: 0; padding: 0; }
 
   :root {
-    --bg: #120d1e;
-    --bg2: #1d1530;
-    --gold: #d4a843;
-    --gold-light: #f0c860;
-    --cream: #f0e8d0;
-    --muted: #8a7a9a;
+    --bg: #e2dedb;
+    --bg2: #d4d0cd;
+    --gold: #b8860b;
+    --gold-light: #c8960c;
+    --cream: #2a2218;
+    --muted: #6a5a5a;
     --red: #c04040;
     --green: #2a7a4a;
   }
 
   body {
-    background: #0a0812;
+    background: #ccc8c5;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -36,7 +36,7 @@
     border-radius: 20px;
     position: relative;
     overflow: hidden;
-    box-shadow: 0 0 60px rgba(212,168,67,0.15);
+    box-shadow: 0 4px 40px rgba(0,0,0,0.18);
   }
 
   /* ─── LAYER 0: BACKGROUND IMAGE ─── */
@@ -46,7 +46,7 @@
     z-index: 0;
     overflow: hidden;
     border-radius: 20px;
-    background: #120d1e;
+    background: #e2dedb;
   }
   .bg-layer img { display: none; }   /* 暫時隱藏，用 CSS background 代替 */
   .fg-layer { display: none; }       /* 前景圖待定，暫時隱藏 */
@@ -264,7 +264,27 @@
     user-select: none;
   }
 
-  /* 色塊佔位 */
+  /* 石像圖片 */
+  .c-img {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 130px;
+    height: 170px;
+    object-fit: contain;
+    object-position: bottom center;
+    transition: opacity 0.2s ease;
+    pointer-events: none;
+    user-select: none;
+    -webkit-user-drag: none;
+  }
+  .c-img.s-idle  { opacity: 1; }
+  .c-img.s-hover { opacity: 0; }
+  .c-item:hover .c-img.s-idle  { opacity: 0; }
+  .c-item:hover .c-img.s-hover { opacity: 1; }
+
+  /* 色塊佔位（無圖時顯示） */
   .c-ph {
     position: absolute;
     bottom: 0;
@@ -699,14 +719,20 @@
 
       <!-- 3 神像：JS 依 currentIdx 計算位置 -->
       <div class="c-item" id="ci-0" data-idx="0">
+        <img class="c-img s-idle"  src="img/statue_a_idle.png"  alt="">
+        <img class="c-img s-hover" src="img/statue_a_hover.png" alt="">
         <div class="c-ph"></div>
         <div class="locked-overlay"><span class="lock-icon">🔒</span><span>即將推出</span></div>
       </div>
       <div class="c-item" id="ci-1" data-idx="1">
+        <img class="c-img s-idle"  src="img/statue_b_idle.png"  alt="">
+        <img class="c-img s-hover" src="img/statue_b_hover.png" alt="">
         <div class="c-ph"></div>
         <div class="locked-overlay"><span class="lock-icon">🔒</span><span>即將推出</span></div>
       </div>
       <div class="c-item" id="ci-2" data-idx="2">
+        <img class="c-img s-idle"  src="img/statue_c_idle.png"  alt="">
+        <img class="c-img s-hover" src="img/statue_c_hover.png" alt="">
         <div class="c-ph"></div>
         <div class="locked-overlay"><span class="lock-icon">🔒</span><span>即將推出</span></div>
       </div>
@@ -862,21 +888,21 @@ const MODES = [
     id: 'coin',
     name: '是非神君',
     desc: '點擊神君，以硬幣叩問是非',
-    color: '#c07840',
+    color: 'rgba(180,160,130,0.25)',
     locked: false,
   },
   {
     id: 'stick',
     name: '吉凶判官',
     desc: '點擊判官，以木籤問卜吉凶',
-    color: '#3a7a8a',
+    color: 'rgba(160,170,180,0.25)',
     locked: false,
   },
   {
     id: 'batch',
     name: '批次抽籤',
     desc: '即將推出，敬請期待',
-    color: '#4a4560',
+    color: 'rgba(160,155,165,0.25)',
     locked: true,
   },
 ];
