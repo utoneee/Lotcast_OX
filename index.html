@@ -803,6 +803,7 @@
   }
 
   .batch-content { width: 100%; max-width: 300px; margin-bottom: 20px; }
+  .batch-content.hidden { display: none; }
 
   .number-chips {
     display: grid;
@@ -910,6 +911,12 @@
   .batch-badge.bb-neutral { background: #4a4a58; color: #aaaabc; }
 
   #s-batch-result .btn-col { width: 100%; max-width: 300px; }
+
+  .batch-result-list.two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
 </style>
 </head>
 <body>
@@ -1047,17 +1054,6 @@
       <button class="tab-btn" id="tab-custom" onclick="switchBatchTab('custom')">自填項目</button>
     </div>
 
-    <!-- 數字 0-9 -->
-    <div class="batch-content" id="batch-num-content">
-      <div class="number-chips">
-        <span class="num-chip">0</span><span class="num-chip">1</span>
-        <span class="num-chip">2</span><span class="num-chip">3</span>
-        <span class="num-chip">4</span><span class="num-chip">5</span>
-        <span class="num-chip">6</span><span class="num-chip">7</span>
-        <span class="num-chip">8</span><span class="num-chip">9</span>
-      </div>
-    </div>
-
     <!-- 自填項目 -->
     <div class="batch-content hidden" id="batch-custom-content">
       <textarea class="batch-textarea" id="batchTextarea"
@@ -1074,11 +1070,10 @@
 
   <!-- BATCH RESULT (layer 10) -->
   <div id="s-batch-result" class="screen hidden">
-    <button class="back-btn" onclick="go('batch')">← 返回</button>
     <div class="inner-title" style="color:#e8e0d0;margin-bottom:20px;">結果揭曉</div>
     <div class="batch-result-list" id="batchResultList"></div>
     <div class="btn-col">
-      <button class="btn-main" id="batchRetryBtn">再抽一次</button>
+      <button class="btn-main" onclick="go('batch')">重新設定</button>
       <button class="btn-sec" onclick="go('home')">回到主畫面</button>
     </div>
   </div>
@@ -1487,10 +1482,11 @@ function triggerFlash() {
 /* ═══════════════════════════════════════════
    BATCH DRAWING
    ═══════════════════════════════════════════ */
-let batchInputMode = 'num';
-let batchDivType   = 'yesno';
-let lastBatchItems = [];
+let batchInputMode   = 'num';
+let batchDivType     = 'yesno';
+let lastBatchItems   = [];
 let lastBatchDivType = 'yesno';
+let lastBatchInputMode = 'num';
 
 const BADGE_CLASS = {
   '是 ○':  'bb-red',
@@ -1504,7 +1500,6 @@ const BADGE_CLASS = {
 
 function switchBatchTab(tab) {
   batchInputMode = tab;
-  document.getElementById('batch-num-content').classList.toggle('hidden', tab !== 'num');
   document.getElementById('batch-custom-content').classList.toggle('hidden', tab !== 'custom');
   document.getElementById('tab-num').classList.toggle('active', tab === 'num');
   document.getElementById('tab-custom').classList.toggle('active', tab === 'custom');
@@ -1525,15 +1520,17 @@ function startBatch() {
     items = raw.split('\n').map(s => s.trim()).filter(s => s.length > 0);
     if (items.length === 0) { showToast('請輸入至少一個項目'); return; }
   }
-  lastBatchItems   = items;
-  lastBatchDivType = batchDivType;
-  renderBatchResult(items, batchDivType);
+  lastBatchItems     = items;
+  lastBatchDivType   = batchDivType;
+  lastBatchInputMode = batchInputMode;
+  renderBatchResult(items, batchDivType, batchInputMode);
 }
 
-function renderBatchResult(items, type) {
+function renderBatchResult(items, type, inputMode) {
   const pool = type === 'yesno' ? COIN : STICK;
   const list = document.getElementById('batchResultList');
   list.innerHTML = '';
+  list.classList.toggle('two-col', inputMode === 'num');
   items.forEach(item => {
     const r     = pool[Math.floor(Math.random() * pool.length)];
     const row   = document.createElement('div');
@@ -1552,9 +1549,6 @@ function renderBatchResult(items, type) {
   go('batch-result');
 }
 
-document.getElementById('batchRetryBtn').onclick = () => {
-  renderBatchResult(lastBatchItems, lastBatchDivType);
-};
 
 </script>
 </body>
