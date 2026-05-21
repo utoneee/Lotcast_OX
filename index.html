@@ -1428,17 +1428,6 @@ document.querySelectorAll('.c-item').forEach(item => {
   document.addEventListener('mouseup',   e => { if (mdown) { mdown = false; onEnd(e.clientX); } });
 })();
 
-// Responsive scale — fit app into viewport
-(function setupScale() {
-  const app = document.getElementById('app');
-  function apply() {
-    const scale = Math.min(window.innerWidth / 390, 1);
-    app.style.transform = `scale(${scale})`;
-  }
-  apply();
-  window.addEventListener('resize', apply);
-})();
-
 // Initial render
 applyTransforms(false);
 decoTimer = setTimeout(() => setDecoVisible(currentIdx), 800);
