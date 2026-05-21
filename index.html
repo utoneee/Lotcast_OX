@@ -1432,7 +1432,7 @@ document.querySelectorAll('.c-item').forEach(item => {
 (function setupScale() {
   const app = document.getElementById('app');
   function apply() {
-    const scale = Math.min(window.innerWidth / 390, window.innerHeight / 844);
+    const scale = Math.min(window.innerWidth / 390, 1);
     app.style.transform = `scale(${scale})`;
   }
   apply();
