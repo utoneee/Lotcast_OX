@@ -25,7 +25,8 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 100vh;
+    height: 100dvh;
+    overflow: hidden;
     font-family: 'Noto Serif TC', serif;
   }
 
@@ -37,6 +38,7 @@
     position: relative;
     overflow: hidden;
     box-shadow: 0 4px 40px rgba(0,0,0,0.18);
+    touch-action: none;
   }
 
   /* ─── LAYER 0: BACKGROUND IMAGE ─── */
@@ -1416,7 +1418,7 @@ document.querySelectorAll('.c-item').forEach(item => {
 
   // Touch
   document.addEventListener('touchstart', e => onStart(e.touches[0].clientX, e.touches[0].clientY), { passive: true });
-  document.addEventListener('touchmove',  e => { if (tracking) onMove(e.touches[0].clientX, e.touches[0].clientY); }, { passive: true });
+  document.addEventListener('touchmove',  e => { if (tracking) { e.preventDefault(); onMove(e.touches[0].clientX, e.touches[0].clientY); } }, { passive: false });
   document.addEventListener('touchend',   e => onEnd(e.changedTouches[0].clientX), { passive: true });
 
   // Mouse（桌面測試）
@@ -1424,6 +1426,17 @@ document.querySelectorAll('.c-item').forEach(item => {
   document.addEventListener('mousedown', e => { mdown = true;  onStart(e.clientX, e.clientY); });
   document.addEventListener('mousemove', e => { if (mdown) onMove(e.clientX, e.clientY); });
   document.addEventListener('mouseup',   e => { if (mdown) { mdown = false; onEnd(e.clientX); } });
+})();
+
+// Responsive scale — fit app into viewport
+(function setupScale() {
+  const app = document.getElementById('app');
+  function apply() {
+    const scale = Math.min(window.innerWidth / 390, window.innerHeight / 844);
+    app.style.transform = `scale(${scale})`;
+  }
+  apply();
+  window.addEventListener('resize', apply);
 })();
 
 // Initial render
