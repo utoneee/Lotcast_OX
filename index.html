@@ -770,7 +770,7 @@
   #s-batch, #s-batch-result {
     background: rgba(10, 6, 20, 0.82);
     justify-content: flex-start;
-    padding-top: 52px;
+    padding-top: 180px;
     padding-bottom: 145px;
     gap: 0;
   }
@@ -1426,6 +1426,17 @@ document.querySelectorAll('.c-item').forEach(item => {
   document.addEventListener('mousedown', e => { mdown = true;  onStart(e.clientX, e.clientY); });
   document.addEventListener('mousemove', e => { if (mdown) onMove(e.clientX, e.clientY); });
   document.addEventListener('mouseup',   e => { if (mdown) { mdown = false; onEnd(e.clientX); } });
+})();
+
+// Scale up on tablets/desktop, leave phones untouched
+(function setupScale() {
+  const app = document.getElementById('app');
+  function apply() {
+    const scale = Math.min(window.innerWidth / 390, window.innerHeight / 844);
+    app.style.transform = scale > 1 ? `scale(${scale})` : '';
+  }
+  apply();
+  window.addEventListener('resize', apply);
 })();
 
 // Initial render
