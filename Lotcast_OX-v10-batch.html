@@ -149,12 +149,12 @@
   /* ─── TOAST (layer 50) ─── */
   .toast {
     position: absolute;
-    bottom: 100px;
+    top: 50%;
     left: 50%;
-    transform: translateX(-50%) translateY(20px);
+    transform: translateX(-50%) translateY(calc(-50% + 20px));
     background: rgba(30,20,50,0.92);
     border: 1px solid rgba(212,168,67,0.35);
-    color: var(--cream);
+    color: #e8dcc8;
     font-size: 13px;
     letter-spacing: 1px;
     padding: 10px 22px;
@@ -167,7 +167,7 @@
   }
   .toast.show {
     opacity: 1;
-    transform: translateX(-50%) translateY(0);
+    transform: translateX(-50%) translateY(-50%);
   }
 
 
@@ -917,6 +917,58 @@
     grid-template-columns: 1fr 1fr;
     gap: 8px;
   }
+
+  /* ═══════════════════════════════════════════
+     LIGHT THEME — INNER SCREENS
+     ═══════════════════════════════════════════ */
+  #s-coin, #s-stick, #s-result,
+  #s-batch, #s-batch-result {
+    background: rgba(242, 236, 224, 0.97);
+  }
+
+  .back-btn {
+    color: #7a6050;
+    border-color: rgba(150,120,80,0.35);
+  }
+  .back-btn:hover { color: #2a1a0e; border-color: rgba(150,110,50,0.6); }
+
+  .badge-a { background: rgba(40,80,180,0.1);  color: #2a50a0; border-color: rgba(60,100,200,0.3); }
+  .badge-b { background: rgba(140,80,10,0.1);  color: #8a5008; border-color: rgba(180,120,30,0.3); }
+  .badge-c { background: rgba(100,50,160,0.1); color: #6030a0; border-color: rgba(130,80,200,0.3); }
+
+  .inner-title { color: #2a1a0e; }
+  .inner-sub   { color: #7a6050; }
+  .tap-hint    { color: #9a8070; }
+
+  .result-label { color: #9a7008; }
+  .result-desc  { color: #7a6050; }
+
+  .btn-main { color: #2a1a0e; border-color: rgba(150,110,50,0.5); }
+  .btn-main:hover { background: rgba(180,140,60,0.12); border-color: #9a7008; }
+  .btn-sec  { color: #7a6050; border-color: rgba(150,120,80,0.35); }
+  .btn-sec:hover  { background: rgba(0,0,0,0.04); color: #2a1a0e; }
+
+  .batch-textarea {
+    color: #2a1a0e;
+    background: rgba(255,255,255,0.6);
+    border-color: rgba(150,120,80,0.35);
+  }
+  .batch-textarea::placeholder { color: rgba(120,90,60,0.45); }
+  .batch-textarea:focus { border-color: rgba(150,110,50,0.6); }
+
+  .tab-group { background: rgba(0,0,0,0.06); }
+  .tab-btn { color: #9a8070; }
+  .tab-btn.active { background: rgba(180,140,60,0.2); color: #8a6008; }
+
+  .type-btn { color: #9a8070; border-color: rgba(150,120,80,0.3); }
+  .type-btn.active { background: rgba(180,140,60,0.15); color: #8a6008; border-color: rgba(150,110,50,0.5); }
+
+  .num-chip { background: rgba(180,140,60,0.12); border-color: rgba(150,120,80,0.3); color: #8a6008; }
+
+  .batch-row { background: rgba(255,255,255,0.55); border-color: rgba(150,120,80,0.2); }
+  .batch-item-name { color: #2a1a0e; }
+
+  #s-batch-result .inner-title { color: #2a1a0e !important; }
 </style>
 </head>
 <body>
@@ -1082,7 +1134,7 @@
   <div id="flash-overlay"></div>
 
   <!-- LAYER 50: TOAST -->
-  <div class="toast" id="toast">🔒 此功能即將推出</div>
+  <div class="toast" id="toast"></div>
 
 
 </div>
@@ -1415,8 +1467,9 @@ document.getElementById('speechBubble').addEventListener('click', advanceQuote);
    TOAST
    ═══════════════════════════════════════════ */
 let toastTimer = null;
-function showToast() {
+function showToast(msg) {
   const t = document.getElementById('toast');
+  t.textContent = msg || '';
   t.classList.add('show');
   clearTimeout(toastTimer);
   toastTimer = setTimeout(() => t.classList.remove('show'), 2200);
@@ -1518,7 +1571,7 @@ function startBatch() {
   } else {
     const raw = document.getElementById('batchTextarea').value;
     items = raw.split('\n').map(s => s.trim()).filter(s => s.length > 0);
-    if (items.length === 0) { showToast('請輸入至少一個項目'); return; }
+    if (items.length === 0) { showToast('尚未填寫項目，無法抽籤'); return; }
   }
   lastBatchItems     = items;
   lastBatchDivType   = batchDivType;
