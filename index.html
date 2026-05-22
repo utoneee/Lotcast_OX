@@ -602,37 +602,23 @@
     align-items: center;
     gap: 8px;
   }
-  .coin {
-    width: 120px;
-    height: 120px;
-    border-radius: 50%;
-    background: radial-gradient(circle at 35% 35%, #f0c860, #a07820);
-    border: 3px solid var(--gold-light);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 44px;
+  .coin-img {
+    width: 220px;
     cursor: pointer;
+    display: block;
     transition: transform 0.15s;
-    position: relative;
   }
-  .coin::after {
-    content: '';
-    position: absolute;
-    inset: 6px;
-    border-radius: 50%;
-    border: 1px solid rgba(255,200,80,0.3);
-  }
-  .coin:hover { transform: scale(1.05) rotate(5deg); }
-  .coin.spinning {
+  .coin-img:hover { transform: scale(1.05); }
+  .coin-img.spinning {
     animation: coinFlip 0.8s cubic-bezier(0.36,0.07,0.19,0.97) forwards;
   }
   @keyframes coinFlip {
-    0%   { transform: rotateY(0) scale(1); }
-    30%  { transform: rotateY(180deg) scale(1.15); }
-    60%  { transform: rotateY(360deg) scale(1.2); }
-    80%  { transform: rotateY(480deg) scale(1.1); }
-    100% { transform: rotateY(540deg) scale(1); }
+    0%   { transform: scaleX(1)    scaleY(1); }
+    22%  { transform: scaleX(0)    scaleY(1.08); }
+    55%  { transform: scaleX(0)    scaleY(1.08); }
+    78%  { transform: scaleX(1)    scaleY(1); }
+    88%  { transform: scaleX(0.96) scaleY(1.02); }
+    100% { transform: scaleX(1)    scaleY(1); }
   }
   .tap-hint {
     font-size: 12px;
@@ -648,50 +634,14 @@
     align-items: center;
     gap: 8px;
   }
-  .stick-box {
-    width: 90px;
-    height: 170px;
-    background: linear-gradient(180deg, #5a3520, #3d2210);
-    border-radius: 12px 12px 4px 4px;
-    border: 2px solid #7a5030;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-end;
-    padding-bottom: 16px;
+  .stick-img {
+    width: 120px;
     cursor: pointer;
-    position: relative;
-    overflow: hidden;
+    display: block;
     transition: transform 0.15s;
   }
-  .stick-box:hover { transform: translateY(-4px); }
-  .stick-box::before {
-    content: '籤';
-    font-family: 'Zen Antique', serif;
-    font-size: 48px;
-    color: rgba(200,160,80,0.15);
-    position: absolute;
-    top: 10px;
-  }
-  .stick-peeking {
-    width: 14px;
-    height: 80px;
-    background: linear-gradient(180deg, #f0d890, #c8a040);
-    border-radius: 3px;
-    box-shadow: -6px 0 0 rgba(200,160,60,0.4), 6px 0 0 rgba(200,160,60,0.4);
-    position: relative;
-  }
-  .stick-peeking::before, .stick-peeking::after {
-    content: '';
-    position: absolute;
-    width: 12px;
-    height: 72px;
-    border-radius: 2px;
-    top: 4px;
-  }
-  .stick-peeking::before { left: -20px; background: linear-gradient(180deg, #d4c070, #a08030); }
-  .stick-peeking::after  { right: -20px; background: linear-gradient(180deg, #e8c860, #b09040); }
-  .stick-box.shaking { animation: shakeBox 0.7s ease-out; }
+  .stick-img:hover { transform: translateY(-4px); }
+  .stick-img.shaking { animation: shakeBox 0.7s ease-out; }
   @keyframes shakeBox {
     0%   { transform: rotate(0deg); }
     15%  { transform: rotate(-10deg); }
@@ -1100,7 +1050,7 @@
     <div class="inner-title">心中默念你的問題</div>
     <div class="inner-sub">準備好了，點擊硬幣</div>
     <div class="coin-wrap">
-      <div class="coin" id="coin" onclick="throwCoin()">🪙</div>
+      <img class="coin-img" id="coin" src="img/硬幣1.png" onclick="throwCoin()">
       <div class="tap-hint">點擊一次</div>
     </div>
   </div>
@@ -1112,9 +1062,7 @@
     <div class="inner-title">心中默念你的問題</div>
     <div class="inner-sub">準備好了，搖動籤筒</div>
     <div class="stick-wrap">
-      <div class="stick-box" id="stickBox" onclick="throwStick()">
-        <div class="stick-peeking"></div>
-      </div>
+      <img class="stick-img" id="stickBox" src="img/籤0.png" onclick="throwStick()">
       <div class="tap-hint">點擊搖籤</div>
     </div>
   </div>
@@ -1231,9 +1179,11 @@ function throwCoin() {
   const el = document.getElementById('coin');
   el.classList.add('spinning');
   el.style.pointerEvents = 'none';
+  setTimeout(() => { el.src = 'img/硬幣2.png'; }, 300);
   setTimeout(() => {
     el.classList.remove('spinning');
     el.style.pointerEvents = '';
+    el.src = 'img/硬幣1.png';
     showResult(COIN[Math.floor(Math.random() * COIN.length)]);
   }, 800);
 }
@@ -1242,9 +1192,13 @@ function throwStick() {
   const el = document.getElementById('stickBox');
   el.classList.add('shaking');
   el.style.pointerEvents = 'none';
+  setTimeout(() => { el.src = 'img/籤1.png'; }, 175);
+  setTimeout(() => { el.src = 'img/籤2.png'; }, 350);
+  setTimeout(() => { el.src = 'img/籤1.png'; }, 525);
   setTimeout(() => {
     el.classList.remove('shaking');
     el.style.pointerEvents = '';
+    el.src = 'img/籤0.png';
     showResult(STICK[Math.floor(Math.random() * STICK.length)]);
   }, 700);
 }
