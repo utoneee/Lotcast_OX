@@ -627,13 +627,14 @@
     -webkit-transform: rotateY(180deg);
   }
   .coin-container.spinning {
-    animation: coin3DFlip 1.8s ease-out forwards;
+    animation: coin3DFlip 1.8s linear forwards;
   }
   @keyframes coin3DFlip {
-    0%   { transform: perspective(600px) rotateY(0deg)    scale(1);    }
-    30%  { transform: perspective(600px) rotateY(450deg)  scale(1.08); }
-    70%  { transform: perspective(600px) rotateY(810deg)  scale(1.04); }
-    100% { transform: perspective(600px) rotateY(1080deg) scale(1);    }
+    0%   { transform: perspective(600px) rotateY(0deg)   scale(1);    }
+    40%  { transform: perspective(600px) rotateY(500deg) scale(1.08); }
+    75%  { transform: perspective(600px) rotateY(670deg) scale(1.03); }
+    90%  { transform: perspective(600px) rotateY(710deg) scale(1.01); }
+    100% { transform: perspective(600px) rotateY(720deg) scale(1);    }
   }
   .tap-hint {
     font-size: 12px;
