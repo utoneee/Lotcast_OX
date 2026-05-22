@@ -202,13 +202,11 @@
   /* ── Speech bubble / cloud (122 → 318px) ── */
   .speech-bubble {
     position: absolute;
-    top: 295px;
+    top: 248px;
     left: 60px; right: 60px;
-    height: 76px;
     z-index: 6;
     background: transparent;
-    border: 1.5px solid rgba(120,100,80,0.3);
-    border-radius: 50% 50% 46% 54% / 58% 58% 42% 42%;
+    border: none;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -216,18 +214,7 @@
     user-select: none;
     -webkit-tap-highlight-color: transparent;
   }
-  .speech-bubble::after {
-    content: '';
-    position: absolute;
-    bottom: -14px;
-    left: calc(50% - 6px);
-    width: 11px;
-    height: 16px;
-    border-right: 1.5px solid rgba(212,168,67,0.22);
-    border-bottom: 1.5px solid rgba(212,168,67,0.22);
-    border-radius: 0 0 50% 0;
-    background: transparent;
-  }
+  .speech-bubble::after { content: none; }
   .bubble-text {
     display: block;
     font-size: 11px;
@@ -449,6 +436,7 @@
 
   /* ── Ornamental divider bar with circle endpoints (600px) ── */
   .ornament-bar {
+    display: none;
     position: absolute;
     top: 555px;
     left: 22px; right: 22px;
@@ -498,7 +486,7 @@
     color: var(--muted);
     letter-spacing: 1.5px;
     text-align: center;
-    text-shadow: 0 1px 8px rgba(0,0,0,0.95);
+    text-shadow: none;
   }
 
   /* ── Foreground image (inside #s-home) ── */
@@ -1012,6 +1000,7 @@
       <!-- 是非神君：石像在後，銅錢在前（HTML 順序決定 z 層） -->
       <div class="c-item" id="ci-0" data-idx="0">
         <div class="c-float">
+          <img class="c-deco deco-circle"  src="img/圈A.png"  alt="">
           <img class="c-img s-idle"   src="img/statue_a_idle.png"   alt="">
           <img class="c-img s-hover1" src="img/statue_a_hover1.png" alt="">
           <img class="c-img s-hover2" src="img/statue_a_hover2.png" alt="">
@@ -1024,7 +1013,7 @@
       <!-- 吉凶判官：水墨圈最底，石像中間，籤在最前 -->
       <div class="c-item" id="ci-1" data-idx="1">
         <div class="c-float">
-          <img class="c-deco deco-circle"  src="img/circle.png"  alt="">
+          <img class="c-deco deco-circle"  src="img/圈B.png"  alt="">
           <img class="c-img s-idle"   src="img/statue_b_idle.png"   alt="">
           <img class="c-img s-hover1" src="img/statue_b_hover1.png" alt="">
           <img class="c-img s-hover2" src="img/statue_b_hover2.png" alt="">
