@@ -300,10 +300,12 @@
     opacity: 0;
     transition: opacity 0.4s ease;
   }
-  /* 桌機：hover 顯示 */
-  .c-item.is-center:hover .c-deco { opacity: 1; }
+  /* 桌機（真正有滑鼠的裝置）：hover 顯示 */
+  @media (hover: hover) {
+    .c-item.is-center:hover .c-deco { opacity: 1; }
+  }
 
-  /* 手機（無 hover 裝置）：滑到中間後延遲顯示 */
+  /* 手機／觸控：滑到中間後延遲顯示，不依賴 hover */
   @media (hover: none) {
     .c-item.deco-visible .c-deco { opacity: 1; }
   }
@@ -1398,6 +1400,8 @@ document.querySelectorAll('.c-item').forEach(item => {
     } else {
       dragX = 0;
       applyTransforms(true);
+      // 拖曳未達門檻，snap 回原位：補回裝飾計時器
+      decoTimer = setTimeout(() => setDecoVisible(currentIdx), 680);
     }
     setTimeout(() => { didDrag = false; }, 80);
   }
