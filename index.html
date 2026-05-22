@@ -605,22 +605,23 @@
     gap: 8px;
   }
   .coin-img {
-    width: 220px;
+    width: 170px;
     cursor: pointer;
     display: block;
     transition: transform 0.15s;
   }
   .coin-img:hover { transform: scale(1.05); }
   .coin-img.spinning {
-    animation: coinFlip 0.8s cubic-bezier(0.36,0.07,0.19,0.97) forwards;
+    animation: coinRock 0.9s ease-in-out forwards;
   }
-  @keyframes coinFlip {
-    0%   { transform: scaleX(1)    scaleY(1); }
-    22%  { transform: scaleX(0)    scaleY(1.08); }
-    55%  { transform: scaleX(0)    scaleY(1.08); }
-    78%  { transform: scaleX(1)    scaleY(1); }
-    88%  { transform: scaleX(0.96) scaleY(1.02); }
-    100% { transform: scaleX(1)    scaleY(1); }
+  @keyframes coinRock {
+    0%   { transform: rotate(0deg);   }
+    18%  { transform: rotate(-24deg); }
+    38%  { transform: rotate(20deg);  }
+    55%  { transform: rotate(-15deg); }
+    70%  { transform: rotate(10deg);  }
+    83%  { transform: rotate(-5deg);  }
+    100% { transform: rotate(0deg);   }
   }
   .tap-hint {
     font-size: 12px;
@@ -1181,26 +1182,25 @@ function throwCoin() {
   const el = document.getElementById('coin');
   el.classList.add('spinning');
   el.style.pointerEvents = 'none';
-  setTimeout(() => { el.src = 'img/硬幣2.png'; }, 300);
   setTimeout(() => {
     el.classList.remove('spinning');
     el.style.pointerEvents = '';
-    el.src = 'img/硬幣1.png';
     showResult(COIN[Math.floor(Math.random() * COIN.length)]);
-  }, 800);
+  }, 900);
 }
 
 function throwStick() {
   const el = document.getElementById('stickBox');
+  el.src = 'img/籤1.png';          // 立刻換掉籤0，搖晃中只用 1/2
   el.classList.add('shaking');
   el.style.pointerEvents = 'none';
-  setTimeout(() => { el.src = 'img/籤1.png'; }, 175);
-  setTimeout(() => { el.src = 'img/籤2.png'; }, 350);
-  setTimeout(() => { el.src = 'img/籤1.png'; }, 525);
+  setTimeout(() => { el.src = 'img/籤2.png'; }, 175);
+  setTimeout(() => { el.src = 'img/籤1.png'; }, 350);
+  setTimeout(() => { el.src = 'img/籤2.png'; }, 525);
   setTimeout(() => {
     el.classList.remove('shaking');
     el.style.pointerEvents = '';
-    el.src = 'img/籤0.png';
+    el.src = 'img/籤0.png';        // 靜止回到籤0
     showResult(STICK[Math.floor(Math.random() * STICK.length)]);
   }, 700);
 }
@@ -1428,6 +1428,10 @@ document.querySelectorAll('.c-item').forEach(item => {
   apply();
   window.addEventListener('resize', apply);
 })();
+
+// Preload coin & stick images（避免換圖時快取未命中的空白閃爍）
+['img/硬幣1.png','img/硬幣2.png','img/籤0.png','img/籤1.png','img/籤2.png']
+  .forEach(s => { const i = new Image(); i.src = s; });
 
 // Initial render
 applyTransforms(false);
