@@ -627,7 +627,7 @@
     -webkit-transform: rotateY(180deg);
   }
   .coin-container.spinning {
-    animation: coin3DFlip 1.2s ease-out forwards;
+    animation: coin3DFlip 1.8s ease-out forwards;
   }
   @keyframes coin3DFlip {
     0%   { transform: perspective(600px) rotateY(0deg)    scale(1);    }
@@ -1233,7 +1233,7 @@ function throwCoin() {
     el.classList.remove('spinning');
     el.style.pointerEvents = '';
     showResult(COIN[Math.floor(Math.random() * COIN.length)]);
-  }, 1200);
+  }, 1800);
 }
 
 function throwStick() {
