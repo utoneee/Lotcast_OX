@@ -656,16 +656,16 @@
     transition: transform 0.15s;
   }
   .stick-container:hover { transform: translateY(-4px); }
-  .stick-cup {
+  .stick-sticks {
     width: 120px;
-    display: block;
+    display: block;       /* 流式，撐起容器高度 */
     pointer-events: none;
   }
-  .stick-sticks {
+  .stick-cup {
     position: absolute;
     top: 0; left: 0;
     width: 120px;
-    display: block;
+    display: block;       /* 絕對定位，蓋在籤桿前面 */
     pointer-events: none;
   }
   /* 杯子：小幅搖晃 */
@@ -1110,8 +1110,8 @@
     <div class="inner-sub">準備好了，搖動籤筒</div>
     <div class="stick-wrap">
       <div class="stick-container" id="stickBox" onclick="throwStick()">
-        <img class="stick-cup"    src="img/籤1.png" alt="">
         <img class="stick-sticks" src="img/籤2.png" alt="">
+        <img class="stick-cup"    src="img/籤1.png" alt="">
       </div>
       <div class="tap-hint">點擊搖籤</div>
     </div>
