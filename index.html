@@ -322,6 +322,45 @@
     width: 200px;
     animation: deco-circle-rotate 14s linear infinite;
   }
+  /* 神像C 星形裝飾搖晃動畫 */
+  @keyframes deco-rock-a { 0%,100%{transform:rotate(-10deg)} 50%{transform:rotate(10deg)} }
+  @keyframes deco-rock-b { 0%,100%{transform:rotate(-8deg)}  50%{transform:rotate(8deg)}  }
+
+  .deco-c1 {
+    width: 36px;
+    top: 8px;
+    left: 22px;
+    animation: deco-rock-a 4.0s ease-in-out infinite;
+    animation-delay: 0s;
+  }
+  .deco-c2 {
+    width: 64px;
+    top: 32px;
+    left: 100px;
+    animation: deco-rock-b 4.5s ease-in-out infinite;
+    animation-delay: -2.25s;
+  }
+  .deco-c3 {
+    width: 68px;
+    bottom: -20px;
+    left: -18px;
+    animation: deco-rock-a 3.8s ease-in-out infinite;
+    animation-delay: 0.7s;
+  }
+  .deco-c4 {
+    width: 12px;
+    bottom: 30px;
+    left: 126px;
+    animation: deco-rock-b 4.8s ease-in-out infinite;
+    animation-delay: 1.0s;
+  }
+
+  /* 圈B 放大，位置對齊圈A */
+  #ci-1 .deco-circle {
+    width: 172px;
+    bottom: 2px;
+    left: calc(50% - 86px);
+  }
 
   /* 銅錢整張（裝飾-A.PNG） */
   .deco-coins {
@@ -1026,6 +1065,10 @@
       <!-- 批次抽籤：2 幀石像（鎖定） -->
       <div class="c-item" id="ci-2" data-idx="2">
         <div class="c-float">
+          <img class="c-deco deco-c1" src="img/圈C1.png" alt="">
+          <img class="c-deco deco-c2" src="img/圈C2.png" alt="">
+          <img class="c-deco deco-c3" src="img/圈C3.png" alt="">
+          <img class="c-deco deco-c4" src="img/圈C4.png" alt="">
           <img class="c-img s-idle"   src="img/statue_c_idle.png"  alt="">
           <img class="c-img s-hover1" src="img/statue_c_hover.png" alt="">
         </div>
