@@ -148,6 +148,46 @@
     animation: flashAnim 1.2s ease-out forwards;
   }
 
+  /* ─── LAYER 60: CLOUD INTRO ─── */
+  #cloud-intro {
+    position: absolute;
+    inset: 0;
+    z-index: 60;
+    pointer-events: none;
+    border-radius: 20px;
+    overflow: hidden;
+  }
+  .ci-wrap {
+    position: absolute;
+    opacity: 0;
+  }
+  .ci-wrap-top {
+    width: 240px;
+    top: 12%;
+    right: -40px;
+    animation: ciWrapTop 1.5s ease-in-out forwards;
+  }
+  .ci-wrap-bot {
+    width: 290px;
+    top: 55%;
+    left: -40px;
+    animation: ciWrapBot 1.5s ease-in-out forwards;
+  }
+  .ci-cloud { width: 100%; display: block; }
+  .ci-cloud-flip { transform: scaleX(-1); }
+  @keyframes ciWrapTop {
+    0%   { opacity: 0; transform: translate(70px, -45px); }
+    25%  { opacity: 1; transform: translate(0, 0); }
+    65%  { opacity: 1; transform: translate(0, 0); }
+    100% { opacity: 0; transform: translate(70px, -45px); }
+  }
+  @keyframes ciWrapBot {
+    0%   { opacity: 0; transform: translate(-70px, 45px); }
+    25%  { opacity: 1; transform: translate(0, 0); }
+    65%  { opacity: 1; transform: translate(0, 0); }
+    100% { opacity: 0; transform: translate(-70px, 45px); }
+  }
+
   /* ─── TOAST (layer 50) ─── */
   .toast {
     position: absolute;
@@ -1169,6 +1209,15 @@
   <!-- LAYER 50: TOAST -->
   <div class="toast" id="toast"></div>
 
+  <!-- LAYER 60: CLOUD INTRO -->
+  <div id="cloud-intro">
+    <div class="ci-wrap ci-wrap-top">
+      <img class="ci-cloud" src="img/裝飾-雲2.png" alt="">
+    </div>
+    <div class="ci-wrap ci-wrap-bot">
+      <img class="ci-cloud ci-cloud-flip" src="img/裝飾-雲1.png" alt="">
+    </div>
+  </div>
 
 </div>
 
@@ -1652,6 +1701,12 @@ function renderBatchResult(items, type, inputMode) {
   go('batch-result');
 }
 
+
+// Cloud intro: remove after animation ends
+setTimeout(function() {
+  var el = document.getElementById('cloud-intro');
+  if (el) el.remove();
+}, 1600);
 
 </script>
 </body>
