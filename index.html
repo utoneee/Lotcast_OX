@@ -596,7 +596,7 @@
     text-align: center;
   }
 
-  /* COIN */
+  /* COIN — CSS 3D flip */
   .coin-wrap {
     margin-bottom: 40px;
     display: flex;
@@ -604,24 +604,36 @@
     align-items: center;
     gap: 8px;
   }
-  .coin-img {
+  .coin-container {
     width: 170px;
+    position: relative;
     cursor: pointer;
-    display: block;
+    transform-style: preserve-3d;
+    -webkit-transform-style: preserve-3d;
     transition: transform 0.15s;
   }
-  .coin-img:hover { transform: scale(1.05); }
-  .coin-img.spinning {
-    animation: coinRock 0.9s ease-in-out forwards;
+  .coin-container:hover { transform: scale(1.05); }
+  .coin-face {
+    width: 170px;
+    display: block;
+    pointer-events: none;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
   }
-  @keyframes coinRock {
-    0%   { transform: rotate(0deg);   }
-    18%  { transform: rotate(-24deg); }
-    38%  { transform: rotate(20deg);  }
-    55%  { transform: rotate(-15deg); }
-    70%  { transform: rotate(10deg);  }
-    83%  { transform: rotate(-5deg);  }
-    100% { transform: rotate(0deg);   }
+  .coin-face.coin-back {
+    position: absolute;
+    top: 0; left: 0;
+    transform: rotateY(180deg);
+    -webkit-transform: rotateY(180deg);
+  }
+  .coin-container.spinning {
+    animation: coin3DFlip 1.2s ease-out forwards;
+  }
+  @keyframes coin3DFlip {
+    0%   { transform: perspective(600px) rotateY(0deg)    scale(1);    }
+    30%  { transform: perspective(600px) rotateY(450deg)  scale(1.08); }
+    70%  { transform: perspective(600px) rotateY(810deg)  scale(1.04); }
+    100% { transform: perspective(600px) rotateY(1080deg) scale(1);    }
   }
   .tap-hint {
     font-size: 12px;
@@ -629,7 +641,7 @@
     letter-spacing: 1px;
   }
 
-  /* STICK */
+  /* STICK — 籤1杯子＋籤2籤桿分層搖晃 */
   .stick-wrap {
     margin-bottom: 40px;
     display: flex;
@@ -637,22 +649,51 @@
     align-items: center;
     gap: 8px;
   }
-  .stick-img {
+  .stick-container {
     width: 120px;
+    position: relative;
     cursor: pointer;
-    display: block;
     transition: transform 0.15s;
   }
-  .stick-img:hover { transform: translateY(-4px); }
-  .stick-img.shaking { animation: shakeBox 0.7s ease-out; }
-  @keyframes shakeBox {
-    0%   { transform: rotate(0deg); }
-    15%  { transform: rotate(-10deg); }
-    30%  { transform: rotate(10deg); }
-    45%  { transform: rotate(-7deg); }
-    60%  { transform: rotate(7deg); }
-    75%  { transform: rotate(-3deg); }
-    100% { transform: rotate(0deg); }
+  .stick-container:hover { transform: translateY(-4px); }
+  .stick-cup {
+    width: 120px;
+    display: block;
+    pointer-events: none;
+  }
+  .stick-sticks {
+    position: absolute;
+    top: 0; left: 0;
+    width: 120px;
+    display: block;
+    pointer-events: none;
+  }
+  /* 杯子：小幅搖晃 */
+  .stick-container.shaking .stick-cup {
+    animation: shakeCup 0.7s ease-out;
+  }
+  /* 籤桿：幅度更大，帶上下移動 */
+  .stick-container.shaking .stick-sticks {
+    animation: shakeSticks 0.7s ease-out;
+  }
+  @keyframes shakeCup {
+    0%   { transform: rotate(0deg);  }
+    15%  { transform: rotate(-6deg); }
+    30%  { transform: rotate(6deg);  }
+    45%  { transform: rotate(-4deg); }
+    60%  { transform: rotate(4deg);  }
+    75%  { transform: rotate(-2deg); }
+    100% { transform: rotate(0deg);  }
+  }
+  @keyframes shakeSticks {
+    0%   { transform: rotate(0deg)   translateY(0px);  }
+    10%  { transform: rotate(-14deg) translateY(-5px); }
+    25%  { transform: rotate(13deg)  translateY(-7px); }
+    40%  { transform: rotate(-11deg) translateY(-4px); }
+    55%  { transform: rotate(10deg)  translateY(-6px); }
+    70%  { transform: rotate(-7deg)  translateY(-2px); }
+    85%  { transform: rotate(5deg)   translateY(-1px); }
+    100% { transform: rotate(0deg)   translateY(0px);  }
   }
 
   /* RESULT */
@@ -1053,7 +1094,10 @@
     <div class="inner-title">心中默念你的問題</div>
     <div class="inner-sub">準備好了，點擊硬幣</div>
     <div class="coin-wrap">
-      <img class="coin-img" id="coin" src="img/硬幣1.png" onclick="throwCoin()">
+      <div class="coin-container" id="coin" onclick="throwCoin()">
+        <img class="coin-face coin-front" src="img/硬幣1.png" alt="">
+        <img class="coin-face coin-back"  src="img/硬幣2.png" alt="">
+      </div>
       <div class="tap-hint">點擊一次</div>
     </div>
   </div>
@@ -1065,7 +1109,10 @@
     <div class="inner-title">心中默念你的問題</div>
     <div class="inner-sub">準備好了，搖動籤筒</div>
     <div class="stick-wrap">
-      <img class="stick-img" id="stickBox" src="img/籤0.png" onclick="throwStick()">
+      <div class="stick-container" id="stickBox" onclick="throwStick()">
+        <img class="stick-cup"    src="img/籤1.png" alt="">
+        <img class="stick-sticks" src="img/籤2.png" alt="">
+      </div>
       <div class="tap-hint">點擊搖籤</div>
     </div>
   </div>
@@ -1186,21 +1233,16 @@ function throwCoin() {
     el.classList.remove('spinning');
     el.style.pointerEvents = '';
     showResult(COIN[Math.floor(Math.random() * COIN.length)]);
-  }, 900);
+  }, 1200);
 }
 
 function throwStick() {
   const el = document.getElementById('stickBox');
-  el.src = 'img/籤1.png';          // 立刻換掉籤0，搖晃中只用 1/2
   el.classList.add('shaking');
   el.style.pointerEvents = 'none';
-  setTimeout(() => { el.src = 'img/籤2.png'; }, 175);
-  setTimeout(() => { el.src = 'img/籤1.png'; }, 350);
-  setTimeout(() => { el.src = 'img/籤2.png'; }, 525);
   setTimeout(() => {
     el.classList.remove('shaking');
     el.style.pointerEvents = '';
-    el.src = 'img/籤0.png';        // 靜止回到籤0
     showResult(STICK[Math.floor(Math.random() * STICK.length)]);
   }, 700);
 }
