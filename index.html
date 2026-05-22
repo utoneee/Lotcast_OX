@@ -148,6 +148,21 @@
     animation: flashAnim 1.2s ease-out forwards;
   }
 
+  /* ─── LAYER 60: INTRO OVERLAY ─── */
+  #intro-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 60;
+    pointer-events: none;
+    border-radius: 20px;
+    background: var(--bg);
+    animation: introFade 1.4s ease-out 0.1s forwards;
+  }
+  @keyframes introFade {
+    0%   { opacity: 1; }
+    100% { opacity: 0; }
+  }
+
   /* ─── TOAST (layer 50) ─── */
   .toast {
     position: absolute;
@@ -1168,6 +1183,9 @@
 
   <!-- LAYER 50: TOAST -->
   <div class="toast" id="toast"></div>
+
+  <!-- LAYER 60: INTRO OVERLAY -->
+  <div id="intro-overlay"></div>
 
 
 </div>
