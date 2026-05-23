@@ -24,10 +24,11 @@
     background: #ccc8c5;
     display: flex;
     justify-content: center;
-    align-items: flex-start;   /* 改為頂端對齊，避免 app 上半段被裁 */
+    align-items: flex-start;
     height: 100dvh;
     overflow: hidden;
     font-family: 'Noto Serif TC', serif;
+    padding-top: max(0px, calc((100dvh - 844px) / 2));
   }
 
   #app {
