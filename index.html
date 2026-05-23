@@ -24,11 +24,10 @@
     background: #ccc8c5;
     display: flex;
     justify-content: center;
-    align-items: flex-start;
+    align-items: center;
     height: 100dvh;
     overflow: hidden;
     font-family: 'Noto Serif TC', serif;
-    padding-top: max(0px, calc((100dvh - 844px) / 2));
   }
 
   #app {
@@ -1501,12 +1500,12 @@ document.querySelectorAll('.c-item').forEach(item => {
   document.addEventListener('mouseup',   e => { if (mdown) { mdown = false; onEnd(e.clientX); } });
 })();
 
-// Scale up on tablets/desktop, leave phones untouched
+// Scale to fit viewport (both up and down)
 (function setupScale() {
   const app = document.getElementById('app');
   function apply() {
     const scale = Math.min(window.innerWidth / 390, window.innerHeight / 844);
-    app.style.transform = scale > 1 ? `scale(${scale})` : '';
+    app.style.transform = scale !== 1 ? `scale(${scale})` : '';
   }
   apply();
   window.addEventListener('resize', apply);
