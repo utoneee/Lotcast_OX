@@ -25,7 +25,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100svh;
+    height: 100dvh;
     overflow: hidden;
     font-family: 'Noto Serif TC', serif;
   }
@@ -1506,11 +1506,14 @@ document.querySelectorAll('.c-item').forEach(item => {
   document.addEventListener('mouseup',   e => { if (mdown) { mdown = false; onEnd(e.clientX); } });
 })();
 
-// Scale to fit viewport (both directions)
+// Scale to fit viewport — body height set via JS to match scale source
 (function setupScale() {
   const app = document.getElementById('app');
   function apply() {
-    const scale = Math.min(window.innerWidth / 390, window.innerHeight / 844);
+    const vw = window.innerWidth;
+    const vh = window.innerHeight;
+    document.body.style.height = vh + 'px';
+    const scale = Math.min(vw / 390, vh / 844);
     app.style.transform = scale !== 1 ? `scale(${scale})` : '';
   }
   apply();
