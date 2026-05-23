@@ -30,16 +30,10 @@
     font-family: 'Noto Serif TC', serif;
   }
 
-  /* 手機：無縫全螢幕 */
+  /* 手機：背景同色，無縫感 */
   @media (max-width: 430px) {
-    body {
-      background: var(--bg);
-      align-items: flex-start;
-    }
-    #app {
-      border-radius: 0;
-      box-shadow: none;
-    }
+    body { background: var(--bg); }
+    #app  { border-radius: 0; box-shadow: none; }
   }
 
   #app {
@@ -1512,12 +1506,12 @@ document.querySelectorAll('.c-item').forEach(item => {
   document.addEventListener('mouseup',   e => { if (mdown) { mdown = false; onEnd(e.clientX); } });
 })();
 
-// Scale up on tablets/desktop only
+// Scale to fit viewport (both directions)
 (function setupScale() {
   const app = document.getElementById('app');
   function apply() {
     const scale = Math.min(window.innerWidth / 390, window.innerHeight / 844);
-    app.style.transform = scale > 1 ? `scale(${scale})` : '';
+    app.style.transform = scale !== 1 ? `scale(${scale})` : '';
   }
   apply();
   window.addEventListener('resize', apply);
