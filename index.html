@@ -30,6 +30,18 @@
     font-family: 'Noto Serif TC', serif;
   }
 
+  /* 手機：無縫全螢幕 */
+  @media (max-width: 430px) {
+    body {
+      background: var(--bg);
+      align-items: flex-start;
+    }
+    #app {
+      border-radius: 0;
+      box-shadow: none;
+    }
+  }
+
   #app {
     width: 390px;
     height: 844px;
