@@ -1506,6 +1506,18 @@ document.querySelectorAll('.c-item').forEach(item => {
   document.addEventListener('mouseup',   e => { if (mdown) { mdown = false; onEnd(e.clientX); } });
 })();
 
+// Debug overlay (temp)
+(function() {
+  const d = document.createElement('div');
+  d.style.cssText = 'position:fixed;top:0;left:0;z-index:9999;background:rgba(0,0,0,0.7);color:#fff;font-size:13px;padding:6px 10px;pointer-events:none;';
+  document.body.appendChild(d);
+  function update() {
+    d.textContent = `vw:${window.innerWidth} vh:${window.innerHeight} svh:${screen.height} scale:${Math.min(window.innerWidth/390, window.innerHeight/844).toFixed(3)}`;
+  }
+  update();
+  window.addEventListener('resize', update);
+})();
+
 // Scale to fit viewport: zoom (mobile) / transform scale (desktop)
 (function setupScale() {
   const app = document.getElementById('app');
