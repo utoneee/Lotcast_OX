@@ -11,13 +11,10 @@
 
   :root {
     --bg: #e2dedb;
-    --bg2: #d4d0cd;
     --gold: #b8860b;
     --gold-light: #c8960c;
     --cream: #2a2218;
     --muted: #6a5a5a;
-    --red: #c04040;
-    --green: #2a7a4a;
   }
 
   body {
@@ -48,16 +45,6 @@
   }
 
   /* ─── LAYER 0: BACKGROUND IMAGE ─── */
-  .bg-layer {
-    position: absolute;
-    inset: 0;
-    z-index: 0;
-    overflow: hidden;
-    border-radius: 20px;
-    background: #e2dedb;
-  }
-  .bg-layer img { display: none; }   /* 暫時隱藏，用 CSS background 代替 */
-  .fg-layer { display: none; }       /* 前景圖待定，暫時隱藏 */
 
 
   /* ─── LAYER 1: PARTICLE CANVAS ─── */
@@ -437,27 +424,6 @@
   }
 
   /* 鎖定遮罩 */
-  .locked-overlay {
-    position: absolute;
-    bottom: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 120px;
-    height: 160px;
-    border-radius: 20px 20px 10px 10px;
-    display: none;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    background: rgba(10,6,20,0.62);
-    color: var(--muted);
-    font-size: 15px;
-    letter-spacing: 2px;
-    gap: 8px;
-    pointer-events: none;
-  }
-  .locked-overlay .lock-icon { font-size: 28px; }
-  .locked-overlay.visible { display: flex; }
 
   /* ── Shadow ellipse under center statue (542 → 555px) ── */
   .statue-shadow {
@@ -570,20 +536,6 @@
     text-shadow: none;
   }
 
-  /* ── Foreground image (inside #s-home) ── */
-  .fg-layer {
-    position: absolute;
-    inset: 0;
-    z-index: 4;
-    pointer-events: none;
-    overflow: hidden;
-  }
-  .fg-layer img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-  }
 
   /* ═══════════════════════════════════════════
      INNER SCREENS
@@ -675,11 +627,6 @@
     75%  { transform: perspective(600px) rotateY(635deg) scale(1.03); }
     90%  { transform: perspective(600px) rotateY(675deg) scale(1.01); }
     100% { transform: perspective(600px) rotateY(720deg) scale(1);    }
-  }
-  .tap-hint {
-    font-size: 12px;
-    color: var(--muted);
-    letter-spacing: 1px;
   }
 
   /* STICK — 籤1杯子＋籤2籤桿分層搖晃 */
@@ -1002,7 +949,6 @@
 
   .inner-title { color: #2a1a0e; }
   .inner-sub   { color: #7a6050; }
-  .tap-hint    { color: #9a8070; }
 
   .result-label { color: #9a7008; }
   .result-desc  { color: #7a6050; }
@@ -1040,7 +986,6 @@
 <div id="app">
 
   <!-- LAYER 0: BACKGROUND -->
-  <div class="bg-layer"><img src="img/bg.png" alt=""></div>
 
 
   <!-- LAYER 1: PARTICLES -->
@@ -1081,7 +1026,6 @@
           <img class="c-deco deco-coins" src="img/裝飾-A.png" alt="">
         </div>
         <div class="c-shadow"></div>
-        <div class="locked-overlay"><span class="lock-icon">🔒</span><span>即將推出</span></div>
       </div>
 
       <!-- 吉凶判官：水墨圈最底，石像中間，籤在最前 -->
@@ -1094,7 +1038,6 @@
           <img class="c-deco deco-sticks" src="img/裝飾-B.png" alt="">
         </div>
         <div class="c-shadow"></div>
-        <div class="locked-overlay"><span class="lock-icon">🔒</span><span>即將推出</span></div>
       </div>
 
       <!-- 批次抽籤：2 幀石像（鎖定） -->
@@ -1108,7 +1051,6 @@
           <img class="c-img s-hover1" src="img/statue_c_hover.png" alt="">
         </div>
         <div class="c-shadow"></div>
-        <div class="locked-overlay"><span class="lock-icon">🔒</span><span>即將推出</span></div>
       </div>
     </div>
 
@@ -1128,7 +1070,6 @@
     </div>
 
     <!-- Foreground layer (z-index 4, above bg/particles/fog, below screens) -->
-    <div class="fg-layer"><img src="img/fg.png" alt=""></div>
 
   </div>
 
@@ -1304,21 +1245,18 @@ const MODES = [
     name: '是非神君',
     desc: '用硬幣叩問是非',
     color: 'rgba(180,160,130,0.25)',
-    locked: false,
   },
   {
     id: 'stick',
     name: '吉凶判官',
     desc: '抽木籤問卜吉凶',
     color: 'rgba(160,170,180,0.25)',
-    locked: false,
   },
   {
     id: 'batch',
     name: '批次抽籤',
     desc: '',
     color: 'rgba(160,155,165,0.25)',
-    locked: false,
   },
 ];
 
@@ -1375,10 +1313,6 @@ function applyTransforms(withTransition) {
     item.style.zIndex         = zIndex;
     item.style.pointerEvents  = absVp < 1.3 ? 'auto' : 'none';
     item.classList.toggle('is-center', absVp < 0.3);
-
-    // 鎖定遮罩只在正面且 locked 時顯示
-    const lo = item.querySelector('.locked-overlay');
-    lo.classList.toggle('visible', absVp < 0.3 && MODES[idx].locked);
   });
 
   // Bottom info & dots
@@ -1441,7 +1375,6 @@ document.querySelectorAll('.c-item').forEach(item => {
       snapTo(idx);
     } else {
       const m = MODES[currentIdx];
-      if (m.locked) { showToast(); return; }
       prevType = m.id;
       go(m.id);
     }
