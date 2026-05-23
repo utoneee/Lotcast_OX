@@ -529,13 +529,32 @@
     z-index: 6;
     pointer-events: none;
   }
+  .mode-nav {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 10px;
+    pointer-events: auto;
+  }
+  .nav-arrow {
+    background: none;
+    border: none;
+    color: var(--gold);
+    font-size: 13px;
+    cursor: pointer;
+    padding: 6px 10px;
+    opacity: 0.6;
+    transition: opacity 0.2s;
+    font-family: 'Noto Serif TC', serif;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .nav-arrow:hover { opacity: 1; }
   .mode-name {
     font-family: 'Zen Antique', serif;
     font-size: 20px;
     color: var(--cream);
     letter-spacing: 5px;
     text-align: center;
-    margin-bottom: 10px;
   }
   .mode-desc {
     font-size: 12px;
@@ -569,7 +588,7 @@
 
   .back-btn {
     position: absolute;
-    bottom: 118px;
+    bottom: 150px;
     left: 50%;
     transform: translateX(-50%);
     background: none;
@@ -1094,7 +1113,11 @@
     <!-- Bottom section: dots → mode name → description -->
     <div class="bottom-section">
       <div class="mode-dots" id="modeDots"></div>
-      <div class="mode-name" id="modeName"></div>
+      <div class="mode-nav">
+        <button class="nav-arrow" onclick="snapTo(currentIdx - 1)">◀</button>
+        <div class="mode-name" id="modeName"></div>
+        <button class="nav-arrow" onclick="snapTo(currentIdx + 1)">▶</button>
+      </div>
       <div class="mode-desc" id="modeDesc"></div>
     </div>
 
@@ -1114,7 +1137,6 @@
         <img class="coin-face coin-front" src="img/硬幣1.png" alt="">
         <img class="coin-face coin-back"  src="img/硬幣2.png" alt="">
       </div>
-      <div class="tap-hint">點擊一次</div>
     </div>
   </div>
 
@@ -1123,13 +1145,12 @@
     <button class="back-btn" onclick="go('home')">← 返回</button>
     <div class="badge badge-b">木籤占卜</div>
     <div class="inner-title">心中默念你的問題</div>
-    <div class="inner-sub">準備好了，搖動籤筒</div>
+    <div class="inner-sub">準備好了，點擊籤筒</div>
     <div class="stick-wrap">
       <div class="stick-container" id="stickBox" onclick="throwStick()">
         <img class="stick-sticks" src="img/籤2.png" alt="">
         <img class="stick-cup"    src="img/籤1.png" alt="">
       </div>
-      <div class="tap-hint">點擊搖籤</div>
     </div>
   </div>
 
@@ -1195,13 +1216,13 @@
    ORIGINAL DIVINATION LOGIC — unchanged
    ═══════════════════════════════════════════ */
 const IMG_PATH = {
-  result_o:       'img/result_o.png',
-  result_x:       'img/result_x.png',
-  result_retry:   'img/result_retry.png',
-  result_daji:    'img/result_daji.png',
-  result_ji:      'img/result_ji.png',
-  result_xiong:   'img/result_xiong.png',
-  result_daxiong: 'img/result_daxiong.png',
+  result_o:       'img/result_o.webp',
+  result_x:       'img/result_x.webp',
+  result_retry:   'img/result_retry.webp',
+  result_daji:    'img/result_daji.webp',
+  result_ji:      'img/result_ji.webp',
+  result_xiong:   'img/result_xiong.webp',
+  result_daxiong: 'img/result_daxiong.webp',
 };
 
 const COIN = [
@@ -1275,21 +1296,21 @@ const MODES = [
   {
     id: 'coin',
     name: '是非神君',
-    desc: '點擊神君，以硬幣叩問是非',
+    desc: '用硬幣叩問是非',
     color: 'rgba(180,160,130,0.25)',
     locked: false,
   },
   {
     id: 'stick',
     name: '吉凶判官',
-    desc: '點擊判官，以木籤問卜吉凶',
+    desc: '抽木籤問卜吉凶',
     color: 'rgba(160,170,180,0.25)',
     locked: false,
   },
   {
     id: 'batch',
     name: '批次抽籤',
-    desc: '即將推出，敬請期待',
+    desc: '',
     color: 'rgba(160,155,165,0.25)',
     locked: false,
   },
