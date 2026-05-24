@@ -26,6 +26,10 @@
     --font-han: 'Noto Sans TC', sans-serif;
   }
 
+  html {
+    overflow: hidden; /* 防止 iOS Safari 在 html 層捲動 */
+    height: 100%;
+  }
   body {
     background: var(--bg);
     display: flex;
@@ -1526,6 +1530,12 @@ document.querySelectorAll('.c-item').forEach(item => {
   }
   apply();
   window.addEventListener('resize', apply);
+  // iOS 鍵盤收起後強制捲回頂部，防止版面偏移
+  document.addEventListener('focusout', (e) => {
+    if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') {
+      setTimeout(() => window.scrollTo(0, 0), 100);
+    }
+  });
 })();
 
 // Preload coin & stick images（避免換圖時快取未命中的空白閃爍）
