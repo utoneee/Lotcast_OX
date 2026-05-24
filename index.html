@@ -1513,9 +1513,9 @@ document.querySelectorAll('.c-item').forEach(item => {
   function apply() {
     const scaleW = window.innerWidth / 390;
     const scaleH = window.innerHeight / 844;
-    // 手機：只按寬度縮放，高度自然溢出底部
-    // 桌機：兩軸取小值確保完整顯示
-    const scale = scaleW < 1 ? scaleW : Math.min(scaleW, scaleH);
+    // 手機（< 600px）只按寬度縮放，避免鍵盤改變 innerHeight 導致縮放跑掉
+    // 桌機/平板：兩軸取小值確保完整顯示
+    const scale = window.innerWidth < 600 ? scaleW : Math.min(scaleW, scaleH);
     if (scale < 1) {
       app.style.zoom = scale;
       app.style.transform = '';
@@ -1525,23 +1525,7 @@ document.querySelectorAll('.c-item').forEach(item => {
     }
   }
   apply();
-  // 用旗標追蹤輸入焦點，確保鍵盤觸發的 resize 被完整攔截
-  let inputFocused = false;
-  document.addEventListener('focusin', (e) => {
-    if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') {
-      inputFocused = true;
-    }
-  });
-  document.addEventListener('focusout', (e) => {
-    if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') {
-      inputFocused = false;
-      setTimeout(apply, 350); // 等鍵盤完全收起後重算
-    }
-  });
-  window.addEventListener('resize', () => {
-    if (inputFocused) return;
-    apply();
-  });
+  window.addEventListener('resize', apply);
 })();
 
 // Preload coin & stick images（避免換圖時快取未命中的空白閃爍）
