@@ -1232,13 +1232,13 @@
   </div>
 
   <!-- COIN (layer 10) -->
-  <div id="s-coin" class="screen hidden">
-    <button class="back-btn" onclick="go('home')">← 返回</button>
+  <div id="s-coin" class="screen hidden" onclick="throwCoin()">
+    <button class="back-btn" onclick="event.stopPropagation(); go('home')">← 返回</button>
     <div class="badge badge-a">硬幣占卜</div>
     <div class="inner-title">心中默念你的問題</div>
-    <div class="inner-sub">準備好了，點擊硬幣</div>
+    <div class="inner-sub">準備好了，點擊任意處</div>
     <div class="coin-wrap">
-      <div class="coin-container" id="coin" onclick="throwCoin()">
+      <div class="coin-container" id="coin">
         <img class="coin-face coin-front" src="img/硬幣1.png" alt="">
         <img class="coin-face coin-back"  src="img/硬幣2.png" alt="">
       </div>
@@ -1246,13 +1246,13 @@
   </div>
 
   <!-- STICK (layer 10) -->
-  <div id="s-stick" class="screen hidden">
-    <button class="back-btn" onclick="go('home')">← 返回</button>
+  <div id="s-stick" class="screen hidden" onclick="throwStick()">
+    <button class="back-btn" onclick="event.stopPropagation(); go('home')">← 返回</button>
     <div class="badge badge-b">木籤占卜</div>
     <div class="inner-title">心中默念你的問題</div>
-    <div class="inner-sub">準備好了，點擊籤筒</div>
+    <div class="inner-sub">準備好了，點擊任意處</div>
     <div class="stick-wrap">
-      <div class="stick-container" id="stickBox" onclick="throwStick()">
+      <div class="stick-container" id="stickBox">
         <img class="stick-sticks" src="img/籤2.png" alt="">
         <img class="stick-cup"    src="img/籤1.png" alt="">
       </div>
@@ -1331,7 +1331,7 @@ const IMG_PATH = {
 };
 
 const COIN = [
-  { label:'是 ○',  desc:'方向正確，放心前行',   img:'result_o',     bg:'#0d2a1a' },
+  { label:'是 ◎',  desc:'方向正確，放心前行',   img:'result_o',     bg:'#0d2a1a' },
   { label:'否 ✕',  desc:'暫時停看聽，再想想',   img:'result_x',     bg:'#2a0d0d' },
   { label:'再一次', desc:'問題說清楚一點再問',   img:'result_retry', bg:'#1a1a2a' },
 ];
@@ -1372,6 +1372,7 @@ function showResult(r) {
 
 function throwCoin() {
   const el = document.getElementById('coin');
+  if (el.classList.contains('spinning')) return;
   el.classList.add('spinning');
   el.style.pointerEvents = 'none';
   setTimeout(() => {
@@ -1383,6 +1384,7 @@ function throwCoin() {
 
 function throwStick() {
   const el = document.getElementById('stickBox');
+  if (el.classList.contains('shaking')) return;
   el.classList.add('shaking');
   el.style.pointerEvents = 'none';
   setTimeout(() => {
@@ -1738,7 +1740,7 @@ let lastBatchDivType = 'yesno';
 let lastBatchInputMode = 'num';
 
 const BADGE_CLASS = {
-  '是 ○':  'bb-red',
+  '是 ◎':  'bb-red',
   '否 ✕':  'bb-black',
   '再一次': 'bb-neutral',
   '大吉':   'bb-red',
