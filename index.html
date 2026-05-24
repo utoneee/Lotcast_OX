@@ -1525,17 +1525,22 @@ document.querySelectorAll('.c-item').forEach(item => {
     }
   }
   apply();
-  // 鍵盤彈出會觸發 resize（innerHeight 縮小），跳過以免版面跑掉
-  window.addEventListener('resize', () => {
-    const active = document.activeElement;
-    if (active && (active.tagName === 'INPUT' || active.tagName === 'TEXTAREA')) return;
-    apply();
+  // 用旗標追蹤輸入焦點，確保鍵盤觸發的 resize 被完整攔截
+  let inputFocused = false;
+  document.addEventListener('focusin', (e) => {
+    if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') {
+      inputFocused = true;
+    }
   });
-  // 鍵盤收起後重新套用縮放
   document.addEventListener('focusout', (e) => {
     if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') {
-      setTimeout(apply, 300);
+      inputFocused = false;
+      setTimeout(apply, 350); // 等鍵盤完全收起後重算
     }
+  });
+  window.addEventListener('resize', () => {
+    if (inputFocused) return;
+    apply();
   });
 })();
 
