@@ -29,7 +29,7 @@
   html, body {
     position: fixed; /* iOS Safari 對 fixed 元素無法捲動，根除鍵盤觸發的版面偏移 */
     top: 0; left: 0;
-    width: 100%; height: 100%;
+    width: 100%; height: 100svh; /* svh = 穩定的小視窗高度，鍵盤出現不影響 */
     overflow: hidden;
   }
   body {
