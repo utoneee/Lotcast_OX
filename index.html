@@ -1057,6 +1057,142 @@
   .batch-badge.bb-neutral { background: none;     color: var(--ghost);  border-color: transparent; }
 
   #s-batch-result .inner-title { color: var(--carbon) !important; margin-bottom: 24px; }
+
+  /* ═══════════════════════════════════════════
+     INFO BUTTON & SCREEN
+     ═══════════════════════════════════════════ */
+  .info-btn {
+    position: absolute;
+    top: 54px; right: 20px;
+    z-index: 7;
+    width: 30px; height: 30px;
+    border-radius: 50%;
+    background: none;
+    border: 0.5px solid rgba(168,117,58,0.3);
+    color: var(--mute);
+    font-family: var(--font-han);
+    font-size: 14px;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    -webkit-tap-highlight-color: transparent;
+    transition: border-color 0.2s, color 0.2s;
+  }
+  .info-btn:hover { color: var(--bronze); border-color: rgba(168,117,58,0.6); }
+
+  #s-info {
+    justify-content: flex-start;
+    padding-top: 72px;
+    padding-bottom: 40px;
+    gap: 0;
+  }
+  #s-info .back-btn {
+    bottom: auto;
+    top: 20px;
+    transform: translateX(-50%);
+  }
+  .info-scroll {
+    width: 100%;
+    max-width: 300px;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    flex: 1;
+  }
+  .info-scroll::-webkit-scrollbar { display: none; }
+
+  .info-section {
+    padding: 18px 0;
+    border-bottom: 0.5px solid var(--hair);
+  }
+  .info-section:last-child { border-bottom: none; }
+  .info-section-title {
+    font-family: var(--font-han);
+    font-size: 10px;
+    color: var(--bronze);
+    letter-spacing: 6px;
+    text-indent: 6px;
+    margin-bottom: 14px;
+  }
+  .info-row {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    margin-bottom: 8px;
+  }
+  .info-mode-name {
+    font-family: var(--font-han);
+    font-size: 13px;
+    color: var(--carbon);
+    letter-spacing: 2px;
+    white-space: nowrap;
+    min-width: 60px;
+  }
+  .info-text {
+    font-family: var(--font-han);
+    font-weight: 300;
+    font-size: 12px;
+    color: var(--mute);
+    letter-spacing: 1.5px;
+    line-height: 2;
+  }
+  .info-sub-title {
+    font-family: var(--font-han);
+    font-size: 11px;
+    color: var(--ghost);
+    letter-spacing: 2px;
+    margin-bottom: 8px;
+    margin-top: 4px;
+  }
+  .info-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 12px;
+  }
+  .info-tag {
+    font-family: var(--font-han);
+    font-size: 12px;
+    color: var(--mute);
+    border: 0.5px solid var(--hair);
+    padding: 3px 10px;
+    letter-spacing: 1px;
+  }
+  .info-sticker {
+    font-family: var(--font-han);
+    font-size: 11px;
+    color: var(--ghost);
+    letter-spacing: 1px;
+    margin-top: 8px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .info-link {
+    color: var(--bronze);
+    font-size: 12px;
+    letter-spacing: 1px;
+    text-decoration: none;
+    border-bottom: 0.5px solid rgba(168,117,58,0.4);
+    padding-bottom: 1px;
+  }
+  .offline-btn {
+    width: 100%;
+    font-size: 13px;
+    letter-spacing: 3px;
+    padding: 11px 0;
+  }
+  .offline-btn:disabled {
+    opacity: 0.5;
+    cursor: default;
+    pointer-events: none;
+  }
+  .info-copyright {
+    font-family: var(--font-han);
+    font-size: 9px;
+    color: var(--ghost);
+    letter-spacing: 2px;
+    margin-top: 8px;
+    opacity: 0.6;
+  }
 </style>
 </head>
 <body>
@@ -1142,7 +1278,8 @@
       <div class="copyright">© UTONEEE 2026</div>
     </div>
 
-    <!-- Foreground layer (z-index 4, above bg/particles/fog, below screens) -->
+    <!-- Info button -->
+    <button class="info-btn" onclick="go('info')">？</button>
 
   </div>
 
@@ -1220,6 +1357,63 @@
   </div>
 
 
+  <!-- INFO (layer 10) -->
+  <div id="s-info" class="screen hidden">
+    <button class="back-btn" onclick="go('home')">← 返回</button>
+
+    <div class="info-scroll">
+
+      <div class="info-section">
+        <div class="info-section-title">功能</div>
+        <div class="info-row">
+          <span class="info-mode-name">是非神君</span>
+          <span class="info-text">擲硬幣，得是或否</span>
+        </div>
+        <div class="info-row">
+          <span class="info-mode-name">吉凶判官</span>
+          <span class="info-text">搖木籤，問卜吉凶</span>
+        </div>
+        <div class="info-row">
+          <span class="info-mode-name">批次抽籤</span>
+          <span class="info-text">一次為多個項目抽籤</span>
+        </div>
+      </div>
+
+      <div class="info-section">
+        <div class="info-section-title">結果</div>
+        <div class="info-sub-title">是非占卜（3 種）</div>
+        <div class="info-tags">
+          <span class="info-tag">是 ◎</span>
+          <span class="info-tag">否 ✕</span>
+          <span class="info-tag">再一次</span>
+        </div>
+        <div class="info-sub-title">吉凶占卜（4 種）</div>
+        <div class="info-tags">
+          <span class="info-tag">大吉</span>
+          <span class="info-tag">吉</span>
+          <span class="info-tag">凶</span>
+          <span class="info-tag">大凶</span>
+        </div>
+        <div class="info-sticker">
+          結果圖片來源：LINE 貼圖
+          <a class="info-link" href="https://store.line.me/stickershop/product/33580655/zh-Hant" target="_blank" rel="noopener">尖尖圓圓 2</a>
+        </div>
+      </div>
+
+      <div class="info-section">
+        <div class="info-section-title">離線使用</div>
+        <div class="info-text" style="margin-bottom:14px">下載後可在無網路環境使用</div>
+        <button class="btn-main offline-btn" id="offlineBtn" onclick="installOffline()">⬇ 啟用離線使用</button>
+      </div>
+
+      <div class="info-section">
+        <div class="info-text">本應用程式由 Claude Code 協助開發</div>
+        <div class="info-copyright">© UTONEEE 2026</div>
+      </div>
+
+    </div>
+  </div>
+
   <!-- LAYER 50: TOAST -->
   <div class="toast" id="toast"></div>
 
@@ -1244,15 +1438,15 @@ const IMG_PATH = {
 };
 
 const COIN = [
-  { label:'是 ◎',  desc:'方向正確，放心前行',   img:'result_o',     bg:'#0d2a1a' },
-  { label:'否 ✕',  desc:'暫時停看聽，再想想',   img:'result_x',     bg:'#2a0d0d' },
-  { label:'再一次', desc:'問題說清楚一點再問',   img:'result_retry', bg:'#1a1a2a' },
+  { label:'是 ◎',  descs:['方向正確，放心前行','可以！','順利！','沒問題！'],             img:'result_o',     bg:'#0d2a1a' },
+  { label:'否 ✕',  descs:['暫時停看聽，再想想','不不不！','最好不要…','還是算了？'],      img:'result_x',     bg:'#2a0d0d' },
+  { label:'再一次', descs:['問題說清楚一點再問','什麼意思？','蛤？'],                      img:'result_retry', bg:'#1a1a2a' },
 ];
 const STICK = [
-  { label:'大吉', desc:'諸事順遂，好運連連',     img:'result_daji',    bg:'#0d2a0d' },
-  { label:'吉',   desc:'吉象顯現，可放心行事',   img:'result_ji',      bg:'#1a2a0d' },
-  { label:'凶',   desc:'稍加謹慎，避開風險',     img:'result_xiong',   bg:'#2a1a0d' },
-  { label:'大凶', desc:'此時不宜妄動，靜待時機', img:'result_daxiong', bg:'#2a0d0d' },
+  { label:'大吉', descs:['諸事順遂，好運連連','大可以！','順順利利！','天時地利人和'],     img:'result_daji',    bg:'#0d2a0d' },
+  { label:'吉',   descs:['吉象顯現，可放心行事','平安～','好欸！'],                        img:'result_ji',      bg:'#1a2a0d' },
+  { label:'凶',   descs:['稍加謹慎，避開風險','小危險','再想想？','三思…'],               img:'result_xiong',   bg:'#2a1a0d' },
+  { label:'大凶', descs:['此時不宜妄動，靜待時機','大大的危險','先不要…','別衝動…'],      img:'result_daxiong', bg:'#2a0d0d' },
 ];
 
 let prevType = 'coin';
@@ -1278,7 +1472,7 @@ function showResult(r) {
     area.innerHTML = '<div class="result-placeholder" style="background:'+r.bg+'">'+r.label+'</div>';
   }
   document.getElementById('resultLabel').textContent = r.label;
-  document.getElementById('resultDesc').textContent  = r.desc;
+  document.getElementById('resultDesc').textContent  = r.descs[Math.floor(Math.random() * r.descs.length)];
   triggerFlash();
   go('result');
 }
@@ -1711,6 +1905,38 @@ function renderBatchResult(items, type, inputMode) {
 }
 
 
+/* ═══════════════════════════════════════════
+   OFFLINE / SERVICE WORKER
+   ═══════════════════════════════════════════ */
+function installOffline() {
+  if (!('serviceWorker' in navigator)) {
+    showToast('此裝置不支援離線功能');
+    return;
+  }
+  const btn = document.getElementById('offlineBtn');
+  btn.textContent = '下載中…';
+  btn.disabled = true;
+  navigator.serviceWorker.register('./sw.js')
+    .then(reg => {
+      const sw = reg.installing || reg.waiting || reg.active;
+      const finish = () => {
+        btn.textContent = '✓ 已可離線使用';
+        showToast('離線快取完成');
+      };
+      if (sw && sw.state !== 'activated') {
+        sw.addEventListener('statechange', e => {
+          if (e.target.state === 'activated') finish();
+        });
+      } else {
+        finish();
+      }
+    })
+    .catch(() => {
+      btn.textContent = '⬇ 啟用離線使用';
+      btn.disabled = false;
+      showToast('安裝失敗，請重試');
+    });
+}
 </script>
 </body>
 </html>
