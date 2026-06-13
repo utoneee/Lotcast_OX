@@ -1832,8 +1832,10 @@ function triggerFlash() { /* 特效待定 */ }
       swAmp: Math.random() * 0.8 + 0.2,
       swFreq: Math.random() * 0.016 + 0.004,
       phase: Math.random() * Math.PI * 2,
-      a: Math.random() * 0.45 + 0.2,       // 提高透明度下限
+      a: Math.random() * 0.45 + 0.2,       // 基準透明度
       isWhite,
+      twFreq: Math.random() * 0.03 + 0.015, // 呼吸快慢（每顆不同）
+      twPhase: Math.random() * Math.PI * 2, // 呼吸相位錯開→不同步閃爍
     });
   }
 
@@ -1847,11 +1849,14 @@ function triggerFlash() { /* 特效待定 */ }
       const p = pts[i];
       p.y += p.vy;
       p.x += Math.sin(t * p.swFreq + p.phase) * p.swAmp;
+      // 呼吸閃爍：在基準透明度的 40%~100% 之間緩慢明滅
+      const breath = 0.4 + 0.6 * (0.5 + 0.5 * Math.sin(t * p.twFreq + p.twPhase));
+      const alpha = p.a * breath;
       ctx.beginPath();
       ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
       ctx.fillStyle = p.isWhite
-        ? `rgba(255,255,255,${p.a})`        // 純白
-        : `rgba(217,163,116,${p.a})`;       // #d9a374
+        ? `rgba(255,255,255,${alpha})`      // 純白
+        : `rgba(217,163,116,${alpha})`;     // #d9a374
       ctx.fill();
       if (p.y < -8) pts.splice(i, 1);      // 飄出頂部移除
     }
@@ -1937,7 +1942,7 @@ function renderBatchResult(items, type, inputMode) {
 /* ═══════════════════════════════════════════
    OFFLINE / SERVICE WORKER
    ═══════════════════════════════════════════ */
-const APP_VERSION = 'v43';
+const APP_VERSION = 'v44';
 
 function showOfflineInstalled() {
   const btn = document.getElementById('offlineBtn');
