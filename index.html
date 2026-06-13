@@ -1528,7 +1528,7 @@ const MODES = [
   {
     id: 'batch',
     name: '批次抽籤',
-    desc: '',
+    desc: '多項目抽籤',
     color: 'rgba(160,155,165,0.25)',
   },
   {
@@ -1939,29 +1939,33 @@ if ('serviceWorker' in navigator) {
 
 function checkUpdate() {
   const btn = document.getElementById('updateBtn');
-  btn.textContent = '更新中…';
+  if (!navigator.onLine) {
+    showToast('目前離線，無法確認更新');
+    return;
+  }
+  btn.textContent = '確認中…';
   btn.disabled = true;
   navigator.serviceWorker.getRegistration('./sw.js').then(reg => {
-    if (!reg) { btn.textContent = '↺ 檢查更新'; btn.disabled = false; return; }
+    if (!reg) { btn.textContent = '↺ 更新'; btn.disabled = false; return; }
     reg.update().then(() => {
       const sw = reg.installing || reg.waiting;
       if (sw) {
         sw.addEventListener('statechange', e => {
           if (e.target.state === 'activated') {
-            showToast('已更新，重新載入生效');
             btn.textContent = '↺ 重新載入';
             btn.disabled = false;
             btn.onclick = () => location.reload();
+            showToast('發現新版本，點更新鍵重新載入');
           }
         });
       } else {
-        showToast('已是最新版本');
-        btn.textContent = '↺ 檢查更新';
+        showToast('已是最新版本 ' + APP_VERSION);
+        btn.textContent = '↺ 更新';
         btn.disabled = false;
       }
     }).catch(() => {
-      showToast('無法連線，請確認網路');
-      btn.textContent = '↺ 檢查更新';
+      showToast('確認失敗，請稍後再試');
+      btn.textContent = '↺ 更新';
       btn.disabled = false;
     });
   });
