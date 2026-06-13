@@ -281,7 +281,7 @@
 
   /* 關於頁 statue_d：滑到中間/hover 時 idle → hover 交叉淡入（只限 #ci-2） */
   #ci-2 .c-img.s-idle,
-  #ci-2 .c-img.s-hover { transition: opacity 0.4s ease; }
+  #ci-2 .c-img.s-hover { transition: opacity 0.7s ease-in-out; }
   #ci-2 .c-img.s-hover { opacity: 0; }
   @media (hover: hover) {
     #ci-2.is-center:hover .s-hover { opacity: 1; }
@@ -290,6 +290,41 @@
   @media (hover: none) {
     #ci-2.deco-visible .s-hover { opacity: 1; }
     #ci-2.deco-visible .s-idle  { opacity: 0; }
+  }
+
+  /* ───── B demo：關於頁星塵呼吸閃爍 + 石像暖光脈動（只限 #ci-2，不改色） ───── */
+  /* 用 filter:opacity 做明滅，與 reveal 的 opacity 互不衝突；drop-shadow 加金色微光暈 */
+  @keyframes deco-twinkle {
+    0%, 100% { filter: opacity(0.45) drop-shadow(0 0 1px rgba(212,168,67,0)); }
+    50%      { filter: opacity(1)    drop-shadow(0 0 4px rgba(212,168,67,0.55)); }
+  }
+  /* 同時保留原本搖晃(transform)，再疊上閃爍(filter)；三顆週期錯開→不同步呼吸 */
+  #ci-2 .deco-c1 { animation: deco-rock-a 4.0s ease-in-out infinite, deco-twinkle 3.1s ease-in-out infinite; }
+  #ci-2 .deco-c2 { animation: deco-rock-b 4.5s ease-in-out infinite, deco-twinkle 3.7s ease-in-out infinite; }
+  #ci-2 .deco-c3 { animation: deco-rock-a 3.8s ease-in-out infinite, deco-twinkle 4.3s ease-in-out infinite; }
+
+  /* 石像背後暖白光暈，呼吸脈動；預設隱藏，滑到中間/hover 才啟動動畫 */
+  #ci-2 .statue-glow {
+    position: absolute;
+    bottom: 26px;
+    left: 50%;
+    width: 124px;
+    height: 124px;
+    transform: translateX(-50%);
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(212,168,67,0.26), rgba(212,168,67,0) 70%);
+    pointer-events: none;
+    opacity: 0;
+  }
+  @keyframes glow-pulse {
+    0%, 100% { opacity: 0.45; transform: translateX(-50%) scale(0.9);  }
+    50%      { opacity: 0.95; transform: translateX(-50%) scale(1.08); }
+  }
+  @media (hover: hover) {
+    #ci-2.is-center:hover .statue-glow { animation: glow-pulse 4.6s ease-in-out infinite; }
+  }
+  @media (hover: none) {
+    #ci-2.deco-visible .statue-glow { animation: glow-pulse 4.6s ease-in-out infinite; }
   }
 
   /* ── 裝飾物件：預設隱藏，hover 時浮現 ── */
@@ -1286,6 +1321,7 @@
       <!-- 關於：statue_d + 圈C 裝飾（位置獨立調整） -->
       <div class="c-item" id="ci-2" data-idx="2">
         <div class="c-float">
+          <div class="statue-glow"></div>
           <img class="c-deco deco-c1" src="img/圈C1.webp" alt="" style="top:30px;left:32px;width:28px;">
           <img class="c-deco deco-c2" src="img/圈C2.webp" alt="" style="top:34px;left:94px;width:50px;">
           <img class="c-deco deco-c3" src="img/圈C3.webp" alt="" style="bottom:24px;left:4px;width:54px;">
@@ -1937,7 +1973,7 @@ function renderBatchResult(items, type, inputMode) {
 /* ═══════════════════════════════════════════
    OFFLINE / SERVICE WORKER
    ═══════════════════════════════════════════ */
-const APP_VERSION = 'v41';
+const APP_VERSION = 'v42';
 
 function showOfflineInstalled() {
   const btn = document.getElementById('offlineBtn');
