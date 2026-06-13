@@ -279,6 +279,19 @@
   /* 石像幀 — JS 控制眨眼，CSS 只設預設 (idle=1, others=0) */
   .c-img.s-idle   { opacity: 1; }
 
+  /* 關於頁 statue_d：滑到中間/hover 時 idle → hover 交叉淡入（只限 #ci-2） */
+  #ci-2 .c-img.s-idle,
+  #ci-2 .c-img.s-hover { transition: opacity 0.4s ease; }
+  #ci-2 .c-img.s-hover { opacity: 0; }
+  @media (hover: hover) {
+    #ci-2.is-center:hover .s-hover { opacity: 1; }
+    #ci-2.is-center:hover .s-idle  { opacity: 0; }
+  }
+  @media (hover: none) {
+    #ci-2.deco-visible .s-hover { opacity: 1; }
+    #ci-2.deco-visible .s-idle  { opacity: 0; }
+  }
+
   /* ── 裝飾物件：預設隱藏，hover 時浮現 ── */
   .c-deco {
     position: absolute;
@@ -1270,22 +1283,26 @@
         <div class="c-shadow"></div>
       </div>
 
-      <!-- 批次抽籤：2 幀石像（鎖定） -->
+      <!-- 關於：statue_d + 圈C 裝飾（位置獨立調整） -->
       <div class="c-item" id="ci-2" data-idx="2">
+        <div class="c-float">
+          <img class="c-deco deco-c1" src="img/圈C1.webp" alt="" style="top:30px;left:32px;width:28px;">
+          <img class="c-deco deco-c2" src="img/圈C2.webp" alt="" style="top:34px;left:94px;width:50px;">
+          <img class="c-deco deco-c3" src="img/圈C3.webp" alt="" style="bottom:24px;left:4px;width:54px;">
+          <img class="c-img s-idle"   src="img/statue_d_idle.webp"  alt="">
+          <img class="c-img s-hover"  src="img/statue_d_hover.webp" alt="">
+        </div>
+        <div class="c-shadow"></div>
+      </div>
+
+      <!-- 批次抽籤：statue_c + 圈C 裝飾 -->
+      <div class="c-item" id="ci-3" data-idx="3">
         <div class="c-float">
           <img class="c-deco deco-c1" src="img/圈C1.webp" alt="">
           <img class="c-deco deco-c2" src="img/圈C2.webp" alt="">
           <img class="c-deco deco-c3" src="img/圈C3.webp" alt="">
           <img class="c-deco deco-c4" src="img/圈C4.webp" alt="">
           <img class="c-img s-idle"   src="img/statue_c_idle.webp"  alt="">
-        </div>
-        <div class="c-shadow"></div>
-      </div>
-
-      <!-- 說明：色塊佔位 -->
-      <div class="c-item" id="ci-3" data-idx="3">
-        <div class="c-float">
-          <div style="position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:130px;height:170px;background:#c8b8a0;border-radius:12px;"></div>
         </div>
         <div class="c-shadow"></div>
       </div>
@@ -1525,16 +1542,16 @@ const MODES = [
     color: 'rgba(160,170,180,0.25)',
   },
   {
+    id: 'info',
+    name: '關於',
+    desc: '功能說明與離線設定',
+    color: 'rgba(150,140,130,0.25)',
+  },
+  {
     id: 'batch',
     name: '批次抽籤',
     desc: '多項目抽籤',
     color: 'rgba(160,155,165,0.25)',
-  },
-  {
-    id: 'info',
-    name: '說明',
-    desc: '功能說明與離線設定',
-    color: 'rgba(150,140,130,0.25)',
   },
 ];
 
@@ -1611,7 +1628,8 @@ function snapTo(targetIdx) {
     const i = +item.dataset.idx;
     const vpOf = (base) => {
       let o = ((i - base) % N + N) % N;
-      return o === 2 ? -1 : o;
+      if (o > Math.floor(N / 2)) o -= N;  // 與 getVisualPos 同一條繞圈公式
+      return o;
     };
     const oldVp = vpOf(oldIdx);
     const newVp = vpOf(currentIdx);
@@ -1919,7 +1937,7 @@ function renderBatchResult(items, type, inputMode) {
 /* ═══════════════════════════════════════════
    OFFLINE / SERVICE WORKER
    ═══════════════════════════════════════════ */
-const APP_VERSION = 'v30';
+const APP_VERSION = 'v41';
 
 function showOfflineInstalled() {
   const btn = document.getElementById('offlineBtn');

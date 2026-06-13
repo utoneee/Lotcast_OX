@@ -1,4 +1,4 @@
-const VERSION = 'v30';
+const VERSION = 'v41';
 const CACHE = 'lotcast-' + VERSION;
 const FILES = [
   './',
@@ -28,6 +28,8 @@ const FILES = [
   './img/statue_a_idle.webp',
   './img/statue_b_idle.webp',
   './img/statue_c_idle.webp',
+  './img/statue_d_idle.webp',
+  './img/statue_d_hover.webp',
 ];
 
 self.addEventListener('install', e => {
