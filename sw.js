@@ -1,4 +1,5 @@
-const CACHE = 'lotcast-v1';
+const VERSION = 'v30';
+const CACHE = 'lotcast-' + VERSION;
 const FILES = [
   './',
   './index.html',

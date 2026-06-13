@@ -1085,11 +1085,6 @@
     padding-bottom: 40px;
     gap: 0;
   }
-  #s-info .back-btn {
-    bottom: auto;
-    top: 20px;
-    transform: translateX(-50%);
-  }
   .info-scroll {
     width: 100%;
     max-width: 300px;
@@ -1137,6 +1132,7 @@
   .info-sub-title {
     font-family: var(--font-han);
     font-size: 11px;
+    font-weight: 500;
     color: var(--ghost);
     letter-spacing: 2px;
     margin-bottom: 8px;
@@ -1192,6 +1188,12 @@
     letter-spacing: 2px;
     margin-top: 8px;
     opacity: 0.6;
+  }
+  .info-version {
+    font-family: var(--font-han);
+    font-size: 11px;
+    color: var(--ghost);
+    letter-spacing: 2px;
   }
 </style>
 </head>
@@ -1369,27 +1371,16 @@
     <div class="info-scroll">
 
       <div class="info-section">
-        <div class="info-section-title">功能</div>
-        <div class="info-row">
-          <span class="info-mode-name">是非神君</span>
-          <span class="info-text">擲硬幣，得是或否</span>
-        </div>
-        <div class="info-row">
-          <span class="info-mode-name">吉凶判官</span>
-          <span class="info-text">搖木籤，問卜吉凶</span>
-        </div>
-        <div class="info-row">
-          <span class="info-mode-name">批次抽籤</span>
-          <span class="info-text">一次為多個項目抽籤</span>
-        </div>
+        <div class="info-section-title">說明</div>
+        <div class="info-text">此應用為 LINE 貼圖<a class="info-link" href="https://store.line.me/stickershop/product/33580655/zh-Hant" target="_blank" rel="noopener">尖尖圓圓 2</a>衍生創作，純娛樂用途，請勿當真喔！</div>
       </div>
 
       <div class="info-section">
         <div class="info-section-title">結果</div>
         <div class="info-sub-title">是非占卜（3 種）</div>
         <div class="info-tags">
-          <span class="info-tag">是 ◎</span>
-          <span class="info-tag">否 ✕</span>
+          <span class="info-tag">是</span>
+          <span class="info-tag">否</span>
           <span class="info-tag">再一次</span>
         </div>
         <div class="info-sub-title">吉凶占卜（4 種）</div>
@@ -1399,16 +1390,15 @@
           <span class="info-tag">凶</span>
           <span class="info-tag">大凶</span>
         </div>
-        <div class="info-sticker">
-          結果圖片來源：LINE 貼圖
-          <a class="info-link" href="https://store.line.me/stickershop/product/33580655/zh-Hant" target="_blank" rel="noopener">尖尖圓圓 2</a>
-        </div>
+        <div class="info-text" style="margin-top:10px">同一結果有不同說明文字喔！:D</div>
       </div>
 
       <div class="info-section">
         <div class="info-section-title">離線使用</div>
         <div class="info-text" style="margin-bottom:14px">下載後可在無網路環境使用</div>
         <button class="btn-main offline-btn" id="offlineBtn" onclick="installOffline()">⬇ 啟用離線使用</button>
+        <div class="info-version" id="infoVersion" style="margin-top:12px"></div>
+        <button class="btn-sec offline-btn" id="updateBtn" style="margin-top:8px;display:none" onclick="checkUpdate()">↺ 檢查更新</button>
       </div>
 
       <div class="info-section">
@@ -1919,6 +1909,53 @@ function renderBatchResult(items, type, inputMode) {
 /* ═══════════════════════════════════════════
    OFFLINE / SERVICE WORKER
    ═══════════════════════════════════════════ */
+const APP_VERSION = 'v30';
+
+function showOfflineInstalled() {
+  const btn = document.getElementById('offlineBtn');
+  btn.textContent = '✓ 已可離線使用';
+  btn.disabled = true;
+  document.getElementById('infoVersion').textContent = '目前版本：' + APP_VERSION;
+  document.getElementById('updateBtn').style.display = '';
+}
+
+// 頁面載入時檢查是否已安裝 SW
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.getRegistration('./sw.js').then(reg => {
+    if (reg && reg.active) showOfflineInstalled();
+  });
+}
+
+function checkUpdate() {
+  const btn = document.getElementById('updateBtn');
+  btn.textContent = '更新中…';
+  btn.disabled = true;
+  navigator.serviceWorker.getRegistration('./sw.js').then(reg => {
+    if (!reg) { btn.textContent = '↺ 檢查更新'; btn.disabled = false; return; }
+    reg.update().then(() => {
+      const sw = reg.installing || reg.waiting;
+      if (sw) {
+        sw.addEventListener('statechange', e => {
+          if (e.target.state === 'activated') {
+            showToast('已更新，重新載入生效');
+            btn.textContent = '↺ 重新載入';
+            btn.disabled = false;
+            btn.onclick = () => location.reload();
+          }
+        });
+      } else {
+        showToast('已是最新版本');
+        btn.textContent = '↺ 檢查更新';
+        btn.disabled = false;
+      }
+    }).catch(() => {
+      showToast('無法連線，請確認網路');
+      btn.textContent = '↺ 檢查更新';
+      btn.disabled = false;
+    });
+  });
+}
+
 function installOffline() {
   if (!('serviceWorker' in navigator)) {
     showToast('此裝置不支援離線功能');
@@ -1931,7 +1968,7 @@ function installOffline() {
     .then(reg => {
       const sw = reg.installing || reg.waiting || reg.active;
       const finish = () => {
-        btn.textContent = '✓ 已可離線使用';
+        showOfflineInstalled();
         showToast('離線快取完成');
       };
       if (sw && sw.state !== 'activated') {
