@@ -1518,7 +1518,10 @@ document.querySelectorAll('.c-item').forEach(item => {
   function apply() {
     const scaleW = window.innerWidth / 390;
     const scaleH = window.innerHeight / 844;
-    const scale = Math.min(scaleW, scaleH);
+    // 手機：優先按寬度縮；若縮完後 app 仍高於螢幕（矮手機），改按高度
+    const scale = window.innerWidth < 600
+      ? (scaleW * 844 <= window.innerHeight ? scaleW : scaleH)
+      : Math.min(scaleW, scaleH);
     if (scale < 1) {
       app.style.zoom = scale;
       app.style.transform = '';
