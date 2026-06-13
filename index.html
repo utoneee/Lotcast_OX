@@ -1260,6 +1260,14 @@
         </div>
         <div class="c-shadow"></div>
       </div>
+
+      <!-- 說明：色塊佔位 -->
+      <div class="c-item" id="ci-3" data-idx="3">
+        <div class="c-float">
+          <div style="position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:130px;height:170px;background:#c8b8a0;border-radius:12px;"></div>
+        </div>
+        <div class="c-shadow"></div>
+      </div>
     </div>
 
 
@@ -1270,16 +1278,13 @@
     <div class="bottom-section">
       <div class="mode-dots" id="modeDots"></div>
       <div class="mode-nav">
-        <button class="nav-arrow" onclick="snapTo(currentIdx - 1)">◀</button>
+        <button class="nav-arrow" onclick="snapTo(currentIdx - 1)">◀︎</button>
         <div class="mode-name" id="modeName"></div>
-        <button class="nav-arrow" onclick="snapTo(currentIdx + 1)">▶</button>
+        <button class="nav-arrow" onclick="snapTo(currentIdx + 1)">▶︎</button>
       </div>
       <div class="mode-desc" id="modeDesc"></div>
       <div class="copyright">© UTONEEE 2026</div>
     </div>
-
-    <!-- Info button -->
-    <button class="info-btn" onclick="go('info')">？</button>
 
   </div>
 
@@ -1525,6 +1530,12 @@ const MODES = [
     desc: '',
     color: 'rgba(160,155,165,0.25)',
   },
+  {
+    id: 'info',
+    name: '說明',
+    desc: '功能說明與離線設定',
+    color: 'rgba(150,140,130,0.25)',
+  },
 ];
 
 /* ═══════════════════════════════════════════
@@ -1554,7 +1565,7 @@ function wrap(i) { return ((i % N) + N) % N; }
 
 function getVisualPos(itemIdx) {
   let offset = ((itemIdx - currentIdx) % N + N) % N;
-  if (offset === 2) offset = -1;           // wrap: 2 → -1（左側）
+  if (offset > Math.floor(N / 2)) offset -= N;  // wrap 右半圈到左側
   return offset + dragX / SLOT_X;
 }
 
