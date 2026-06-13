@@ -865,7 +865,9 @@
   .batch-result-list.two-col {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 8px;
+    grid-template-rows: repeat(5, auto);
+    grid-auto-flow: column;
+    gap: 8px 28px;
   }
 
   /* ═══════════════════════════════════════════
@@ -1034,7 +1036,6 @@
     border-bottom: 0.5px solid var(--hair);
     border-radius: 0;
   }
-  .batch-result-list.two-col .batch-row:nth-child(2n) { border-left: 0.5px solid var(--hair); }
   .batch-item-name {
     font-family: var(--font-han);
     font-weight: 400;
