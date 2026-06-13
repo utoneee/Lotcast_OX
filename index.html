@@ -1081,11 +1081,21 @@
 
   #s-info {
     justify-content: flex-start;
-    padding-top: 72px;
-    padding-bottom: 200px;
+    padding-top: 52px;
+    padding-bottom: 40px;
     gap: 0;
   }
-  #s-info .back-btn { bottom: 100px; }
+  .info-page-title {
+    font-family: var(--font-han);
+    font-size: 18px;
+    font-weight: 400;
+    color: var(--carbon);
+    letter-spacing: 6px;
+    text-indent: 6px;
+    text-align: center;
+    margin-bottom: 16px;
+    flex-shrink: 0;
+  }
   .info-scroll {
     width: 100%;
     max-width: 300px;
@@ -1102,11 +1112,11 @@
   .info-section:last-child { border-bottom: none; }
   .info-section-title {
     font-family: var(--font-han);
-    font-size: 11px;
+    font-size: 13px;
     font-weight: 500;
     color: var(--bronze);
-    letter-spacing: 6px;
-    text-indent: 6px;
+    letter-spacing: 5px;
+    text-indent: 5px;
     margin-bottom: 14px;
   }
   .info-row {
@@ -1373,7 +1383,8 @@
 
   <!-- INFO (layer 10) -->
   <div id="s-info" class="screen hidden">
-    <button class="back-btn" onclick="go('home')">← 返回</button>
+
+    <div class="info-page-title">說明頁</div>
 
     <div class="info-scroll">
 
@@ -1384,9 +1395,9 @@
 
       <div class="info-section">
         <div class="info-section-title">結果</div>
-        <div class="info-sub-title">是非占卜（3 種：是 / 否 / 再一次）</div>
-        <div class="info-sub-title">吉凶占卜（4 種：大吉 / 吉 / 凶 / 大凶）</div>
-        <div class="info-text" style="margin-top:12px">同一結果有不同說明文字喔！:D</div>
+        <div class="info-text">是非占卜（3 種：是 / 否 / 再一次）</div>
+        <div class="info-text">吉凶占卜（4 種：大吉 / 吉 / 凶 / 大凶）</div>
+        <div class="info-text">同一結果有不同說明文字喔！:D</div>
       </div>
 
       <div class="info-section">
@@ -1401,8 +1412,10 @@
 
       <div class="info-section">
         <div class="info-text">本應用程式由 Claude Code 協助開發</div>
-        <div class="info-copyright">© UTONEEE 2026</div>
+        <div class="info-text">© UTONEEE 2026</div>
       </div>
+
+      <button class="btn-sec" style="width:100%;margin-top:8px;letter-spacing:3px" onclick="go('home')">← 返回</button>
 
     </div>
   </div>
