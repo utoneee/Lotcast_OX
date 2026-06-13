@@ -1172,11 +1172,17 @@
   }
   .info-link {
     color: var(--bronze);
-    font-size: 12px;
+    font-size: 14px;
     letter-spacing: 1px;
     text-decoration: none;
     border-bottom: 0.5px solid rgba(168,117,58,0.4);
     padding-bottom: 1px;
+  }
+  .info-version-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px;
   }
   .offline-btns {
     display: flex;
@@ -1380,25 +1386,27 @@
   <!-- INFO (layer 10) -->
   <div id="s-info" class="screen hidden">
 
+    <img class="info-icon" src="img/icon-1.png" alt="是非吉凶">
     <div class="info-scroll">
 
       <div class="info-section">
         <div class="info-section-title">關於</div>
-        <div class="info-text">此應用為 LINE 貼圖<a class="info-link" href="https://store.line.me/stickershop/product/33580655/zh-Hant" target="_blank" rel="noopener">尖尖圓圓 2</a>衍生創作，純娛樂用途，請勿當真喔！</div>
+        <div class="info-text">此應用為 LINE 貼圖 <a class="info-link" href="https://store.line.me/stickershop/product/33580655/zh-Hant" target="_blank" rel="noopener">尖尖圓圓 2</a> 衍生創作，純娛樂用途，請勿當真喔！</div>
         <div class="info-text" style="margin-top:10px">同一結果有不同說明文字喔！:D</div>
       </div>
 
       <div class="info-section">
-        <div class="info-section-title">離線 &amp; 主畫面</div>
-        <img class="info-icon" src="img/icon-1.png" alt="是非吉凶">
-        <div class="info-text" style="margin-bottom:6px">加入主畫面：點分享 📤，加入主畫面</div>
-        <div class="info-text" style="margin-bottom:14px">離線使用：點下方按鈕，下載後無網路也可使用</div>
+        <div class="info-section-title">其他功能</div>
+        <div class="info-text" style="margin-bottom:6px">・加入主畫面：點分享 📤，加入主畫面</div>
+        <div class="info-text" style="margin-bottom:14px">・離線使用：點下方按鈕，下載後無網路也可使用</div>
         <div class="offline-btns">
           <button class="btn-main offline-btn" id="offlineBtn" onclick="installOffline()">⬇ 啟用離線使用</button>
           <button class="btn-sec offline-btn" id="updateBtn" style="display:none" onclick="checkUpdate()">↺ 更新</button>
         </div>
-        <div class="info-version" id="infoVersion" style="margin-top:10px"></div>
-        <button id="removeBtn" style="display:none;background:none;border:none;font-family:var(--font-han);font-size:11px;color:var(--ghost);letter-spacing:2px;margin-top:8px;cursor:pointer;padding:4px 0;text-decoration:underline;text-underline-offset:3px" onclick="removeOffline()">刪除離線資料</button>
+        <div class="info-version-row">
+          <div class="info-version" id="infoVersion"></div>
+          <button id="removeBtn" style="display:none;background:none;border:none;font-family:var(--font-han);font-size:11px;color:var(--ghost);letter-spacing:2px;cursor:pointer;padding:4px 0;text-decoration:underline;text-underline-offset:3px" onclick="removeOffline()">刪除離線資料</button>
+        </div>
       </div>
 
       <div class="info-section" style="border-bottom:none">
