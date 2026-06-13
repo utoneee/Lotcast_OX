@@ -1408,6 +1408,7 @@
           <button class="btn-sec offline-btn" id="updateBtn" style="display:none" onclick="checkUpdate()">↺ 更新</button>
         </div>
         <div class="info-version" id="infoVersion" style="margin-top:10px"></div>
+        <button id="removeBtn" style="display:none;background:none;border:none;font-family:var(--font-han);font-size:11px;color:var(--ghost);letter-spacing:2px;margin-top:8px;cursor:pointer;padding:4px 0;text-decoration:underline;text-underline-offset:3px" onclick="removeOffline()">刪除離線資料</button>
       </div>
 
       <div class="info-section">
@@ -1928,6 +1929,23 @@ function showOfflineInstalled() {
   btn.disabled = true;
   document.getElementById('infoVersion').textContent = '目前版本：' + APP_VERSION;
   document.getElementById('updateBtn').style.display = '';
+  document.getElementById('removeBtn').style.display = '';
+}
+
+function removeOffline() {
+  if (!confirm('確定要刪除離線資料嗎？')) return;
+  navigator.serviceWorker.getRegistrations().then(regs =>
+    Promise.all(regs.map(r => r.unregister()))
+  ).then(() => caches.keys()).then(keys =>
+    Promise.all(keys.map(k => caches.delete(k)))
+  ).then(() => {
+    document.getElementById('offlineBtn').textContent = '⬇ 啟用離線使用';
+    document.getElementById('offlineBtn').disabled = false;
+    document.getElementById('updateBtn').style.display = 'none';
+    document.getElementById('removeBtn').style.display = 'none';
+    document.getElementById('infoVersion').textContent = '';
+    showToast('離線資料已刪除');
+  }).catch(() => showToast('刪除失敗，請重試'));
 }
 
 // 頁面載入時檢查是否已安裝 SW
