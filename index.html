@@ -1518,9 +1518,7 @@ document.querySelectorAll('.c-item').forEach(item => {
   function apply() {
     const scaleW = window.innerWidth / 390;
     const scaleH = window.innerHeight / 844;
-    // 手機（< 600px）只按寬度縮放，避免鍵盤改變 innerHeight 導致縮放跑掉
-    // 桌機/平板：兩軸取小值確保完整顯示
-    const scale = window.innerWidth < 600 ? scaleW : Math.min(scaleW, scaleH);
+    const scale = Math.min(scaleW, scaleH);
     if (scale < 1) {
       app.style.zoom = scale;
       app.style.transform = '';
