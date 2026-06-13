@@ -1082,9 +1082,10 @@
   #s-info {
     justify-content: flex-start;
     padding-top: 72px;
-    padding-bottom: 40px;
+    padding-bottom: 200px;
     gap: 0;
   }
+  #s-info .back-btn { bottom: 100px; }
   .info-scroll {
     width: 100%;
     max-width: 300px;
@@ -1101,7 +1102,8 @@
   .info-section:last-child { border-bottom: none; }
   .info-section-title {
     font-family: var(--font-han);
-    font-size: 10px;
+    font-size: 11px;
+    font-weight: 500;
     color: var(--bronze);
     letter-spacing: 6px;
     text-indent: 6px;
@@ -1123,20 +1125,20 @@
   }
   .info-text {
     font-family: var(--font-han);
-    font-weight: 300;
-    font-size: 12px;
-    color: var(--mute);
-    letter-spacing: 1.5px;
-    line-height: 2;
+    font-weight: 400;
+    font-size: 14px;
+    color: var(--carbon);
+    letter-spacing: 1px;
+    line-height: 1.9;
   }
   .info-sub-title {
     font-family: var(--font-han);
-    font-size: 11px;
+    font-size: 13px;
     font-weight: 500;
-    color: var(--ghost);
-    letter-spacing: 2px;
-    margin-bottom: 8px;
-    margin-top: 4px;
+    color: var(--mute);
+    letter-spacing: 1.5px;
+    margin-bottom: 0;
+    margin-top: 8px;
   }
   .info-tags {
     display: flex;
@@ -1170,10 +1172,15 @@
     border-bottom: 0.5px solid rgba(168,117,58,0.4);
     padding-bottom: 1px;
   }
-  .offline-btn {
+  .offline-btns {
+    display: flex;
+    gap: 8px;
     width: 100%;
+  }
+  .offline-btn {
+    flex: 1;
     font-size: 13px;
-    letter-spacing: 3px;
+    letter-spacing: 2px;
     padding: 11px 0;
   }
   .offline-btn:disabled {
@@ -1377,28 +1384,19 @@
 
       <div class="info-section">
         <div class="info-section-title">結果</div>
-        <div class="info-sub-title">是非占卜（3 種）</div>
-        <div class="info-tags">
-          <span class="info-tag">是</span>
-          <span class="info-tag">否</span>
-          <span class="info-tag">再一次</span>
-        </div>
-        <div class="info-sub-title">吉凶占卜（4 種）</div>
-        <div class="info-tags">
-          <span class="info-tag">大吉</span>
-          <span class="info-tag">吉</span>
-          <span class="info-tag">凶</span>
-          <span class="info-tag">大凶</span>
-        </div>
-        <div class="info-text" style="margin-top:10px">同一結果有不同說明文字喔！:D</div>
+        <div class="info-sub-title">是非占卜（3 種：是 / 否 / 再一次）</div>
+        <div class="info-sub-title">吉凶占卜（4 種：大吉 / 吉 / 凶 / 大凶）</div>
+        <div class="info-text" style="margin-top:12px">同一結果有不同說明文字喔！:D</div>
       </div>
 
       <div class="info-section">
         <div class="info-section-title">離線使用</div>
         <div class="info-text" style="margin-bottom:14px">下載後可在無網路環境使用</div>
-        <button class="btn-main offline-btn" id="offlineBtn" onclick="installOffline()">⬇ 啟用離線使用</button>
-        <div class="info-version" id="infoVersion" style="margin-top:12px"></div>
-        <button class="btn-sec offline-btn" id="updateBtn" style="margin-top:8px;display:none" onclick="checkUpdate()">↺ 檢查更新</button>
+        <div class="offline-btns">
+          <button class="btn-main offline-btn" id="offlineBtn" onclick="installOffline()">⬇ 啟用離線使用</button>
+          <button class="btn-sec offline-btn" id="updateBtn" style="display:none" onclick="checkUpdate()">↺ 更新</button>
+        </div>
+        <div class="info-version" id="infoVersion" style="margin-top:10px"></div>
       </div>
 
       <div class="info-section">
