@@ -1993,7 +1993,7 @@ function removeOffline() {
   ).then(() => caches.keys()).then(keys =>
     Promise.all(keys.map(k => caches.delete(k)))
   ).then(() => {
-    document.getElementById('offlineBtn').textContent = '↓ 啟用離線';
+    document.getElementById('offlineBtn').textContent = '啟動離線使用';
     document.getElementById('offlineBtn').disabled = false;
     document.getElementById('updateBtn').style.display = 'none';
     document.getElementById('removeBtn').style.display = 'none';
@@ -2067,7 +2067,7 @@ function installOffline() {
       }
     })
     .catch(() => {
-      btn.textContent = '↓ 啟用離線';
+      btn.textContent = '啟動離線使用';
       btn.disabled = false;
       showToast('安裝失敗，請重試');
     });
