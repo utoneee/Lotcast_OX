@@ -292,6 +292,10 @@
     #ci-2.deco-visible .s-idle  { opacity: 0; }
   }
 
+  /* 關於頁圈C：比石像晚 0.5s 出場（延遲只掛在顯示狀態→進場延遲、離場立即） */
+  @media (hover: hover) { #ci-2.is-center:hover .c-deco { transition-delay: 0.5s; } }
+  @media (hover: none)  { #ci-2.deco-visible .c-deco    { transition-delay: 0.5s; } }
+
   /* ── 裝飾物件：預設隱藏，hover 時浮現 ── */
   .c-deco {
     position: absolute;
@@ -1094,16 +1098,9 @@
 
   #s-info {
     justify-content: flex-start;
-    padding-top: 110px;
-    padding-bottom: 40px;
+    padding-top: 104px;
+    padding-bottom: 28px;
     gap: 0;
-  }
-  .info-icon {
-    width: 80px;
-    height: 80px;
-    border-radius: 18px;
-    margin: 0 auto 14px;
-    display: block;
   }
   .info-scroll {
     width: 100%;
@@ -1115,10 +1112,8 @@
   .info-scroll::-webkit-scrollbar { display: none; }
 
   .info-section {
-    padding: 18px 0;
-    border-bottom: 0.5px solid var(--hair);
+    padding: 12px 0;
   }
-  .info-section:last-child { border-bottom: none; }
   .info-section-title {
     font-family: var(--font-han);
     font-size: 16px;
@@ -1126,7 +1121,27 @@
     color: var(--carbon);
     letter-spacing: 4px;
     text-align: center;
-    margin-bottom: 14px;
+    margin-bottom: 10px;
+  }
+  .info-section-title::before {
+    content: "";
+    display: block;
+    width: 28px;
+    height: 1px;
+    background: var(--bronze);
+    margin: 0 auto 8px;
+  }
+  .info-footer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+  }
+  .footer-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    flex-shrink: 0;
   }
   .info-row {
     display: flex;
@@ -1148,7 +1163,7 @@
     font-size: 14px;
     color: var(--carbon);
     letter-spacing: 1px;
-    line-height: 1.9;
+    line-height: 1.7;
   }
   .info-sub-title {
     font-family: var(--font-han);
@@ -1195,7 +1210,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-top: 10px;
+    margin-top: 8px;
   }
   .offline-btns {
     display: flex;
@@ -1206,7 +1221,7 @@
     flex: 1;
     font-size: 13px;
     letter-spacing: 2px;
-    padding: 11px 0;
+    padding: 9px 0;
   }
   .offline-btn:disabled {
     opacity: 0.5;
@@ -1403,21 +1418,20 @@
   <!-- INFO (layer 10) -->
   <div id="s-info" class="screen hidden">
 
-    <img class="info-icon" src="img/icon-1.png" alt="是非吉凶">
     <div class="info-scroll">
 
       <div class="info-section">
         <div class="info-section-title">關於</div>
-        <div class="info-text">此應用為 LINE 貼圖 <a class="info-link" href="https://store.line.me/stickershop/product/33580655/zh-Hant" target="_blank" rel="noopener">尖尖圓圓 2</a> 衍生創作，占卜結果為娛樂用途，勿當真。</div>
-        <div class="info-text" style="margin-top:10px">同一結果有不同說明文字喔！:D</div>
+        <div class="info-text">此應用為 LINE 貼圖 <a class="info-link" href="https://store.line.me/stickershop/product/33580655/zh-Hant" target="_blank" rel="noopener">尖尖圓圓 2</a> 衍生創作，歡迎購買使用。占卜和結果皆為娛樂用途，請理性思考勿迷信。</div>
+        <div class="info-text" style="margin-top:10px;font-size:12px;text-align:right;color:var(--ghost)">*結果頁隨機掉落不同說明文喔！:D</div>
       </div>
 
       <div class="info-section" style="margin-top:12px">
         <div class="info-section-title">其他功能</div>
-        <div class="info-text" style="margin-bottom:6px">・加入主畫面：點分享 📤，加入主畫面</div>
-        <div class="info-text" style="margin-bottom:14px">・離線使用：點下方按鈕下載後可離線使用</div>
+        <div class="info-text" style="text-align:center;font-size:13px;color:var(--carbon);margin-bottom:10px">分享至主畫面或離線使用</div>
+        <button class="btn-sec offline-btn" style="width:100%;margin-bottom:10px" onclick="shareApp()">＋ 加入主畫面 / 分享</button>
         <div class="offline-btns">
-          <button class="btn-main offline-btn" id="offlineBtn" onclick="installOffline()">⬇ 啟用離線使用</button>
+          <button class="btn-main offline-btn" id="offlineBtn" onclick="installOffline()">↓ 啟用離線</button>
           <button class="btn-sec offline-btn" id="updateBtn" style="display:none" onclick="checkUpdate()">↺ 更新</button>
         </div>
         <div class="info-version-row">
@@ -1427,11 +1441,16 @@
       </div>
 
       <div class="info-section" style="border-bottom:none">
-        <div class="info-text" style="font-size:12px;color:var(--ghost)">本應用程式由 Claude Code 協助開發</div>
-        <div class="info-text" style="font-size:12px;color:var(--ghost)">© UTONEEE 2026</div>
+        <div class="info-footer">
+          <img class="footer-icon" src="img/icon-1.png" alt="是非吉凶">
+          <div>
+            <div class="info-text" style="font-size:12px;color:var(--ghost)">本應用程式由 Claude Code 協助開發</div>
+            <div class="info-text" style="font-size:12px;color:var(--ghost)">© UTONEEE 2026</div>
+          </div>
+        </div>
       </div>
 
-      <button class="btn-main" style="width:100%;margin-top:8px;letter-spacing:3px" onclick="go('home')">← 返回</button>
+      <button class="btn-main" style="width:100%;margin-top:8px;letter-spacing:3px" onclick="go('home')">回到主畫面</button>
 
     </div>
   </div>
@@ -1807,6 +1826,24 @@ function showToast(msg) {
   toastTimer = setTimeout(() => t.classList.remove('show'), 2200);
 }
 
+// 分享 App — 原生分享面板（iOS 面板內含「加入主畫面」），不支援時退回複製連結
+function shareApp() {
+  const data = {
+    title: '是非吉凶',
+    text: '心中有疑，神明指引｜是非吉凶占卜',
+    url: location.href,
+  };
+  if (navigator.share) {
+    navigator.share(data).catch(() => {});
+  } else if (navigator.clipboard) {
+    navigator.clipboard.writeText(location.href)
+      .then(() => showToast('已複製連結，貼給朋友吧'))
+      .catch(() => showToast('複製失敗，請手動複製網址'));
+  } else {
+    showToast('此瀏覽器不支援分享');
+  }
+}
+
 /* ═══════════════════════════════════════════
    VISUAL EFFECTS
    ═══════════════════════════════════════════ */
@@ -1823,34 +1860,35 @@ function triggerFlash() { /* 特效待定 */ }
   const pts = [];
 
   function spawn(y) {
-    const isWhite = Math.random() > 0.25;  // 75% 白、25% 金
+    const isWhite = Math.random() > 0.42;  // 約 58% 白、42% 金（金色變多、白色總量維持）
     pts.push({
       x: Math.random() * W,
       y: y !== undefined ? y : H + 6,      // 從下方冒出
-      r: Math.random() * 2.5 + 1.0,         // 放大
-      vy: -(Math.random() * 0.8 + 0.3),    // 加快
-      swAmp: Math.random() * 0.8 + 0.2,
+      // 約 18% 較大顆做層次，其餘維持細緻
+      r: Math.random() < 0.18 ? Math.random() * 1.6 + 2.2 : Math.random() * 1.4 + 0.7,
+      vy: -(Math.random() * 0.7 + 0.35),   // 往上飄速度（放慢）
+      swAmp: Math.random() * 0.4 + 0.1,    // 左右擺幅縮小
       swFreq: Math.random() * 0.016 + 0.004,
       phase: Math.random() * Math.PI * 2,
-      a: Math.random() * 0.45 + 0.2,       // 基準透明度
+      a: Math.random() * 0.5 + 0.45,       // 基準透明度（再拉高→更亮更實）
       isWhite,
-      twFreq: Math.random() * 0.03 + 0.015, // 呼吸快慢（每顆不同）
+      twFreq: Math.random() * 0.05 + 0.04, // 呼吸快慢（每顆不同，再加快）
       twPhase: Math.random() * Math.PI * 2, // 呼吸相位錯開→不同步閃爍
     });
   }
 
-  for (let i = 0; i < 70; i++) spawn(Math.random() * H);
+  for (let i = 0; i < 200; i++) spawn(Math.random() * H);
 
   let t = 0;
   (function tick() {
     ctx.clearRect(0, 0, W, H);
-    if (t % 15 === 0 && pts.length < 100) spawn();
+    if (t % 15 === 0 && pts.length < 270) spawn();
     for (let i = pts.length - 1; i >= 0; i--) {
       const p = pts[i];
       p.y += p.vy;
       p.x += Math.sin(t * p.swFreq + p.phase) * p.swAmp;
-      // 呼吸閃爍：在基準透明度的 40%~100% 之間緩慢明滅
-      const breath = 0.4 + 0.6 * (0.5 + 0.5 * Math.sin(t * p.twFreq + p.twPhase));
+      // 呼吸閃爍：在基準透明度的 60%~100% 之間緩慢明滅
+      const breath = 0.6 + 0.4 * (0.5 + 0.5 * Math.sin(t * p.twFreq + p.twPhase));
       const alpha = p.a * breath;
       ctx.beginPath();
       ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
@@ -1942,7 +1980,7 @@ function renderBatchResult(items, type, inputMode) {
 /* ═══════════════════════════════════════════
    OFFLINE / SERVICE WORKER
    ═══════════════════════════════════════════ */
-const APP_VERSION = 'v44';
+const APP_VERSION = 'v45';
 
 function showOfflineInstalled() {
   const btn = document.getElementById('offlineBtn');
