@@ -1097,9 +1097,9 @@
   .info-btn:hover { color: var(--bronze); border-color: rgba(168,117,58,0.6); }
 
   #s-info {
-    justify-content: flex-start;
-    padding-top: 104px;
-    padding-bottom: 28px;
+    justify-content: center;
+    padding-top: 48px;
+    padding-bottom: 40px;
     gap: 0;
   }
   .info-scroll {
@@ -1107,7 +1107,7 @@
     max-width: 300px;
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
-    flex: 1;
+    max-height: 100%;
   }
   .info-scroll::-webkit-scrollbar { display: none; }
 
@@ -1277,7 +1277,7 @@
     <!-- Carousel -->
     <div class="carousel-area" id="carouselArea">
 
-      <!-- 3 神像：JS 依 currentIdx 計算位置 -->
+      <!-- 4 神像：JS 依 currentIdx 計算位置 -->
       <!-- 是非神君：石像在後，銅錢在前（HTML 順序決定 z 層） -->
       <div class="c-item" id="ci-0" data-idx="0">
         <div class="c-float">
@@ -1980,7 +1980,7 @@ function renderBatchResult(items, type, inputMode) {
 /* ═══════════════════════════════════════════
    OFFLINE / SERVICE WORKER
    ═══════════════════════════════════════════ */
-const APP_VERSION = 'v45';
+const APP_VERSION = 'v46';
 
 function showOfflineInstalled() {
   const btn = document.getElementById('offlineBtn');
@@ -1998,7 +1998,7 @@ function removeOffline() {
   ).then(() => caches.keys()).then(keys =>
     Promise.all(keys.map(k => caches.delete(k)))
   ).then(() => {
-    document.getElementById('offlineBtn').textContent = '⬇ 啟用離線使用';
+    document.getElementById('offlineBtn').textContent = '↓ 啟用離線';
     document.getElementById('offlineBtn').disabled = false;
     document.getElementById('updateBtn').style.display = 'none';
     document.getElementById('removeBtn').style.display = 'none';
@@ -2072,7 +2072,7 @@ function installOffline() {
       }
     })
     .catch(() => {
-      btn.textContent = '⬇ 啟用離線使用';
+      btn.textContent = '↓ 啟用離線';
       btn.disabled = false;
       showToast('安裝失敗，請重試');
     });
