@@ -734,7 +734,7 @@
   .btn-main:hover { background: rgba(212,168,67,0.1); border-color: var(--gold); }
   .btn-sec {
     background: none;
-    border: 0.5px solid rgba(138,122,154,0.4);
+    border: 0.5px solid rgba(138,122,154,0.7);
     color: var(--muted);
     padding: 11px 0;
     border-radius: 99px;
@@ -974,7 +974,7 @@
   .btn-main:hover { background: rgba(168,117,58,0.06); border-color: var(--bronze); }
   .btn-sec {
     background: transparent;
-    border: 0.5px solid rgba(168,117,58,0.2);
+    border: 0.5px solid rgba(168,117,58,0.55);
     border-radius: 99px;
     color: var(--mute);
     font-family: var(--font-han);
@@ -1428,12 +1428,13 @@
 
       <div class="info-section" style="margin-top:12px">
         <div class="info-section-title">其他功能</div>
-        <div class="info-text" style="text-align:center;font-size:13px;color:var(--carbon);margin-bottom:10px">分享至主畫面或離線使用</div>
-        <button class="btn-sec offline-btn" style="width:100%;margin-bottom:10px" onclick="shareApp()">＋ 加入主畫面 / 分享</button>
-        <div class="offline-btns">
-          <button class="btn-main offline-btn" id="offlineBtn" onclick="installOffline()">↓ 啟用離線</button>
+        <div class="info-text" style="text-align:center;font-size:12px;color:var(--ghost);margin-bottom:10px">加入主畫面 / 複製連結 / 離線使用</div>
+        <div style="display:flex;align-items:flex-start;gap:8px;margin-bottom:10px"><span style="color:var(--gold);flex-shrink:0;font-size:13px;line-height:1.9">▶︎</span><div class="info-text" style="flex:1">在瀏覽器點<svg width="14" height="17" viewBox="0 0 14 17" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:inline-block;vertical-align:-3px;margin:0 1px"><path d="M4 7H3.5A1.5 1.5 0 0 0 2 8.5V14a1.5 1.5 0 0 0 1.5 1.5h7A1.5 1.5 0 0 0 12 14V8.5A1.5 1.5 0 0 0 10.5 7H10" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/><path d="M7 10V1.5M4.5 4L7 1.5L9.5 4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg> ，選加入主畫面</div></div>
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px"><span style="color:var(--gold);flex-shrink:0;font-size:13px">▶︎</span><button class="btn-sec offline-btn" style="flex:1" onclick="shareApp()">複製分享連結</button></div>
+        <div style="display:flex;align-items:center;gap:8px"><span style="color:var(--gold);flex-shrink:0;font-size:13px">▶︎</span><div class="offline-btns" style="flex:1">
+          <button class="btn-main offline-btn" id="offlineBtn" onclick="installOffline()">啟動離線使用</button>
           <button class="btn-sec offline-btn" id="updateBtn" style="display:none" onclick="checkUpdate()">↺ 更新</button>
-        </div>
+        </div></div>
         <div class="info-version-row">
           <div class="info-version" id="infoVersion"></div>
           <button id="removeBtn" style="display:none;background:none;border:none;font-family:var(--font-han);font-size:11px;color:var(--ghost);letter-spacing:2px;cursor:pointer;padding:4px 0;text-decoration:underline;text-underline-offset:3px" onclick="removeOffline()">刪除離線資料</button>
@@ -1826,21 +1827,15 @@ function showToast(msg) {
   toastTimer = setTimeout(() => t.classList.remove('show'), 2200);
 }
 
-// 分享 App — 原生分享面板（iOS 面板內含「加入主畫面」），不支援時退回複製連結
+// 分享 App — 複製發佈網址到剪貼簿
 function shareApp() {
-  const data = {
-    title: '是非吉凶',
-    text: '心中有疑，神明指引｜是非吉凶占卜',
-    url: location.href,
-  };
-  if (navigator.share) {
-    navigator.share(data).catch(() => {});
-  } else if (navigator.clipboard) {
-    navigator.clipboard.writeText(location.href)
+  const text = '是非吉凶\nhttps://utoneee.github.io/Lotcast_OX/';
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(text)
       .then(() => showToast('已複製連結，貼給朋友吧'))
       .catch(() => showToast('複製失敗，請手動複製網址'));
   } else {
-    showToast('此瀏覽器不支援分享');
+    showToast('此瀏覽器不支援複製');
   }
 }
 
