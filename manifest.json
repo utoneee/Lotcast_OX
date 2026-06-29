@@ -1,0 +1,16 @@
+{
+  "name": "是非吉凶",
+  "short_name": "是非吉凶",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#e2dedb",
+  "theme_color": "#b8860b",
+  "icons": [
+    {
+      "src": "img/icon-1.png?v=2",
+      "sizes": "180x180",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}

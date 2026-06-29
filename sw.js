@@ -1,8 +1,9 @@
-const VERSION = 'v46';
+const VERSION = 'v47';
 const CACHE = 'lotcast-' + VERSION;
 const FILES = [
   './',
   './index.html',
+  './manifest.json',
   './img/top.webp',
   './img/icon-1.png',
   './img/result_o.webp',
